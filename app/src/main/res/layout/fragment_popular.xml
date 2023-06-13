@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/image_back">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
@@ -43,24 +48,17 @@
                 android:orientation="horizontal"
                 tools:listitem="@layout/fragment_now_playing_grid_layout" />
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swiperefresh"
-                android:layout_width="match_parent"
-                android:layout_height="700dp">
-
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/fragment_grid_layout" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <Button
         android:id="@+id/upButtonPopular"
         android:layout_width="45dp"

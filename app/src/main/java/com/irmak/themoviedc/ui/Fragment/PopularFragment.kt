@@ -7,40 +7,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ImageView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.MovieAdapter
 import com.irmak.themoviedc.adapter.NowPlayingAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
-import com.irmak.themoviedc.data.remote.api.movieIdNumber
 import com.irmak.themoviedc.data.remote.api.pageNumber
 import com.irmak.themoviedc.databinding.FragmentPopularBinding
 import com.irmak.themoviedc.model.nowPlayingModel.ResultNP
 import com.irmak.themoviedc.model.popularModel.MovieRespons
-import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
-import com.irmak.themoviedc.model.popularModel.PopularMovieResponse
 import com.irmak.themoviedc.repository.NowPlayingRepository
 import com.irmak.themoviedc.repository.PopularListRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.ui.extensions.loadImage
 import com.irmak.themoviedc.viewModel.MovieViewModel
 import com.irmak.themoviedc.viewModel.NowPlayingViewModel
-import com.irmak.themoviedc.viewModel.PopularMovieViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.MovieViewModelFactory
 import com.irmak.themoviedc.viewModel.viewModelFactory.NowPlayingViewModelFactory
 import retrofit2.Retrofit
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.fixedRateTimer
 import kotlin.properties.Delegates
-import kotlin.system.exitProcess
 
 class PopularFragment : Fragment() {
 

@@ -43,7 +43,11 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.irmak.themoviedc.ui.Fragment.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment" >
+        <action
+            android:id="@+id/action_detailFragment_to_popularFragment"
+            app:destination="@id/popularFragment" />
+    </fragment>
     <fragment
         android:id="@+id/videoPlayerFragment"
         android:name="com.irmak.themoviedc.ui.Fragment.videoPlayerFragment"

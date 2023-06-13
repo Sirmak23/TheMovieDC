@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.service.autofill.Validators.and
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat.animate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.ActorAdapter
@@ -107,6 +109,9 @@ class DetailFragment : Fragment() {
         actorInitBinding()
         ActorObserver()
         trailerViewModel.getVideo()
+        binding.backButtonImageView.setOnClickListener {
+            findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToPopularFragment())
+        }
         binding.homePageButton.setOnClickListener {
             if (video == "null") {
                 Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
@@ -154,6 +159,7 @@ class DetailFragment : Fragment() {
             ActorRecyler.apply {
                 actorAdapter.setActorList(ArrayList(actorList))
                 adapter = actorAdapter
+                ActorRecyler.canScrollVertically(0)
             }
         }
     }
