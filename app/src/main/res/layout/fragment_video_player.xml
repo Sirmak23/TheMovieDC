@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:screenOrientation="landscape"
     android:layout_height="match_parent"
     tools:context=".ui.Fragment.videoPlayerFragment">
 <ImageView
@@ -13,10 +15,10 @@
     android:background="@drawable/movie_pos"/>
 
     <WebView
+        android:background="@drawable/movie_pos"
         android:id="@+id/webView"
-
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_height="250dp" />
-
+        android:screenOrientation="userLandscape" />
 </RelativeLayout>

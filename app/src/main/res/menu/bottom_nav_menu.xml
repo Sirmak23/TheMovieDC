@@ -3,15 +3,20 @@
     <item
         android:id="@+id/popularFragment"
         android:icon="@drawable/ic_popular"
-        android:title="Popular"/>
+        android:title="Popüler"/>
 
     <item
-        android:id="@+id/nowPlayingFragment"
+        android:id="@+id/tvPopularFragment"
         android:icon="@drawable/ic_now_playing"
-        android:title="Now Playing"/>
+        android:title="Popüler Diziler"/>
 
     <item
         android:id="@+id/upcomingFragment"
         android:icon="@drawable/ic_up_coming"
         android:title="Upcoming"/>
+
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_search"
+        android:title="Ara"/>
 </menu>

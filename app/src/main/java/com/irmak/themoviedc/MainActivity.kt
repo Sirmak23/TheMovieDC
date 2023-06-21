@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         val drawerLayout: DrawerLayout? = binding.drawerLayout
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.popularFragment, R.id.nowPlayingFragment, R.id.upcomingFragment),
+            setOf(R.id.popularFragment, R.id.nowPlayingFragment, R.id.upcomingFragment,R.id.searchFragment),
             drawerLayout
         )
 //        setupActionBar(navController)

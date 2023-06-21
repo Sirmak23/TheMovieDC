@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.UpcomingAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
@@ -57,6 +59,7 @@ private lateinit var binding:FragmentUpcomingBinding
         initUpcoming()
         upComingObserve()
         upToPageUp()
+        backInvisible()
     }
     private fun initUpcoming(){
         with(binding){
@@ -74,6 +77,22 @@ private lateinit var binding:FragmentUpcomingBinding
     private fun upToPageUp(){
         binding.upButtonUpcoming.setOnClickListener{
             binding.recyclerViewUpcoming.smoothScrollToPosition(0)
+        }
+    }
+    private fun backInvisible() {
+        with(binding) {
+            upButtonUpcoming.visibility = View.GONE
+            val layoutManager: LinearLayoutManager =
+                recyclerViewUpcoming.layoutManager as LinearLayoutManager
+            recyclerViewUpcoming.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (layoutManager.findFirstVisibleItemPosition() == 0) {
+                        upButtonUpcoming.visibility = View.GONE
+                    } else {
+                        upButtonUpcoming.visibility = View.VISIBLE
+                    }
+                }
+            })
         }
     }
 }

@@ -54,7 +54,7 @@
                         android:id="@+id/movieDEtailImageView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY" />
+                        android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -70,7 +70,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <Button
-                        android:id="@+id/homePageButton"
+                        android:id="@+id/trailerButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/ic_playredd"

@@ -1,75 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/image_back">
+    android:background="@drawable/blue_background"
+    tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="25dp">
-
-        <TextView
-            android:id="@+id/tmdcText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="THE MOVİE DC"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:textStyle="italic" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="130dp">
+    <TextView
+        android:id="@+id/tmdcText"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:text="THE MOVİE DC"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTrailer"
-            android:layout_width="match_parent"
+            android:id="@+id/recyclerViewNpConcat"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_height="match_parent"
-            tools:itemCount="4"
-           tools:listitem="@layout/fragment_video_layout"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/nowPlayingBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
-
-    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-    <!--        android:id="@+id/swiperefreshNowPlay"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="30dp">-->
-    <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewNowPlaying"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="155dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/fragment_now_playing_grid_layout" />
-
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tmdcText" />
 
     <Button
         android:id="@+id/upButton"
-        android:layout_width="45dp"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"
         android:background="@drawable/ic_up"
-        android:textColor="@color/white" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
-</RelativeLayout>
-
-
+</androidx.constraintlayout.widget.ConstraintLayout>

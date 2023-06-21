@@ -7,11 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.irmak.themoviedc.MainActivity
+import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.NowPlayingAdapter
+import com.irmak.themoviedc.adapter.NpHorizontalWrapperAdapter
 import com.irmak.themoviedc.adapter.StoryAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentNowPlayingBinding
+import com.irmak.themoviedc.holder.frm
 import com.irmak.themoviedc.model.nowPlayingModel.ResultNP
 import com.irmak.themoviedc.model.storyModel.ResultStoryNP
 import com.irmak.themoviedc.repository.NowPlayingRepository
@@ -22,10 +29,10 @@ import com.irmak.themoviedc.viewModel.StoryViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.NowPlayingViewModelFactory
 import com.irmak.themoviedc.viewModel.viewModelFactory.StoryViewModelFactory
 import retrofit2.Retrofit
-import java.util.*
 import kotlin.properties.Delegates
 
 class NowPlayingFragment : Fragment() {
+    lateinit var concat: ConcatAdapter
     var nowPlayList: List<ResultNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             nowPlayingAdapter.setNowPlayList(ArrayList(newValue))
@@ -45,6 +52,9 @@ class NowPlayingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNowPlayingBinding.inflate(inflater, container, false)
+        frm = "nowPlaying"
+        val main = activity as MainActivity
+        main.setBottomNavigationViewVisibility(true)
         return binding.root
     }
 
@@ -63,7 +73,7 @@ class NowPlayingFragment : Fragment() {
     private val nowPlayingViewModel: NowPlayingViewModel by viewModels {
         NowPlayingViewModelFactory(nowPlayingRepository)
     }
-    private val storyAdapter:StoryAdapter by lazy {
+    private val storyAdapter: StoryAdapter by lazy {
         StoryAdapter()
     }
     private val storyRepository: StoryRepository by lazy {
@@ -72,88 +82,95 @@ class NowPlayingFragment : Fragment() {
     private val storyViewModel: StoryViewModel by viewModels {
         StoryViewModelFactory(storyRepository)
     }
-
+    private val npHorizontalWrapperAdapter: NpHorizontalWrapperAdapter by lazy {
+        NpHorizontalWrapperAdapter(storyAdapter)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nowPlayingViewModel.getNowPlayMovie()
         storyViewModel.getPlayVidoeMovie()
-        initNpBinding()
-        initVideNpBinding()
+        initConcatAdapter()
         NowPlayObserver()
         storyObserver()
         upToPage()
+        upToPagePopular()
+        backInvisible()
 
-
-//        initNpREfBinding()
-//        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        binding.recyclerViewNowPlayingBackRefresh.layoutManager = layoutManager
-//
-//        val timer = Timer()
-//        val handler = Handler()
-//
-//        val runnable = object : Runnable {
-//            override fun run() {
-//                val currentPosition = layoutManager.findFirstVisibleItemPosition()
-//                val nextPosition =
-//                    if (currentPosition == layoutManager.itemCount - 1) 0 else currentPosition + 1
-//                binding.recyclerViewNowPlayingBackRefresh.smoothScrollToPosition(nextPosition)
-//                handler.postDelayed(this, 5000) // 5 saniye
-//            }
-//        }
-//        timer.schedule(object : TimerTask() {
-//            override fun run() {
-//                handler.post(runnable)
-//
-//            }
-//        }, 5000) // 5 sani
     }
 
-    private fun initNpBinding() {
+    private fun initConcatAdapter() {
         with(binding) {
-            recyclerViewNowPlaying.apply {
-                nowPlayingAdapter.setNowPlayList(ArrayList(nowPlayList))
-                adapter = nowPlayingAdapter
-                recyclerViewNowPlaying.layoutManager = GridLayoutManager(requireContext(), 1)
-            }
-        }
-    }
-    private fun initVideNpBinding() {
-        with(binding) {
-            recyclerViewTrailer.apply {
-                storyAdapter.setStoryPlayList(ArrayList(storyList))
-                adapter = storyAdapter
+            nowPlayingAdapter.setNowPlayList(ArrayList(nowPlayList))
+            storyAdapter.setStoryPlayList(ArrayList(storyList))
+            recyclerViewNpConcat.apply {
+                concat = ConcatAdapter(
+                    npHorizontalWrapperAdapter,
+                    nowPlayingAdapter
+                )
+                recyclerViewNpConcat.layoutManager = LinearLayoutManager(requireContext())
+                adapter = concat
             }
         }
     }
 
-    //    private fun initNpREfBinding() {
-//            with(binding) {
-//                recyclerViewNowPlayingBackRefresh.apply {
-//                    nowPlayingAdapter.setNowPlayList(ArrayList(nowPlayList))
-//                    adapter = nowPlayingAdapter
-//                    recyclerViewNowPlayingBackRefresh.layoutManager = GridLayoutManager(requireContext(), 1)
-//                }
-//            }
-//        }
     private fun NowPlayObserver() {
         nowPlayingViewModel.nowPlaylist.observe(viewLifecycleOwner) { nowPlayList ->
             this.nowPlayList = nowPlayList.results
         }
     }
-    private fun storyObserver(){
-        storyViewModel.nowPlayVideolist.observe(viewLifecycleOwner){storyList->
+
+    private fun storyObserver() {
+        storyViewModel.nowPlayVideolist.observe(viewLifecycleOwner) { storyList ->
             this.storyList = storyList.results
         }
     }
+
     private fun upToPage() {
         binding.upButton.setOnClickListener {
-            binding.recyclerViewNowPlaying.smoothScrollToPosition(0)
+            binding.recyclerViewNpConcat.smoothScrollToPosition(0)
         }
     }
 
+    private fun backInvisible() {
+        with(binding) {
+            upButton.visibility = View.GONE
+            val layoutManager: LinearLayoutManager =
+                recyclerViewNpConcat.layoutManager as LinearLayoutManager
+            recyclerViewNpConcat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (layoutManager.findFirstVisibleItemPosition() == 0) {
+                        upButton.visibility = View.GONE
+                    } else {
+                        upButton.visibility = View.VISIBLE
+                    }
+                }
+            })
+        }
+    }
+
+    private fun upToPagePopular() {
+        binding.upButton.setOnClickListener {
+            binding.recyclerViewNpConcat.smoothScrollToPosition(0)
+        }
+    }
 }
 
 
-
-
+//    private fun initNpBinding() {
+//        with(binding) {
+//            recyclerViewNowPlaying.apply {
+//                nowPlayingAdapter.setNowPlayList(ArrayList(nowPlayList))
+//                adapter = nowPlayingAdapter
+//                recyclerViewNowPlaying.layoutManager = GridLayoutManager(requireContext(), 1)
+//            }
+//        }
+//    }
+//    private fun initVideNpBinding() {
+//        with(binding) {
+//            recyclerViewTrailer.apply {
+//                storyAdapter.setStoryPlayList(ArrayList(storyList))
+//                adapter = storyAdapter
+//            }
+//        }
+//    }

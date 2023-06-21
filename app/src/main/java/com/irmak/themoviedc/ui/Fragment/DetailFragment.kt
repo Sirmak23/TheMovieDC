@@ -1,20 +1,16 @@
 package com.irmak.themoviedc.ui.Fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.service.autofill.Validators.and
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.ViewCompat.animate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.R
@@ -22,6 +18,7 @@ import com.irmak.themoviedc.adapter.ActorAdapter
 import com.irmak.themoviedc.adapter.PopularMovieDetailAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentDetailBinding
+import com.irmak.themoviedc.holder.frm
 import com.irmak.themoviedc.model.actorModel.ActorDetail
 import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
 import com.irmak.themoviedc.model.trailer.TrailerResponse
@@ -48,17 +45,12 @@ class DetailFragment : Fragment() {
         Log.e("Delegates", "user -> ${newValue}")
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     private lateinit var binding: FragmentDetailBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
-
         popularMovieViewModel.getPopularMovieDetail()
         popularMovieViewModel.popularMovieDetailList.observe(
             viewLifecycleOwner,
@@ -112,17 +104,15 @@ class DetailFragment : Fragment() {
         binding.backButtonImageView.setOnClickListener {
             findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToPopularFragment())
         }
-        binding.homePageButton.setOnClickListener {
+        binding.trailerButton.setOnClickListener {
             if (video == "null") {
                 Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                val url = "https://www.youtube.com/watch?v=${video}"
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
-                view.context.startActivity(intent)
+                val action = DetailFragmentDirections.actionDetailFragmentToVideoPlayerFragment()
+                    findNavController().navigate(action)
+                }
             }
-        }
 //        popularMovieViewModel.popularMovieDetailList.observe(
 //            viewLifecycleOwner,
 //            ::movieDetailObserver
