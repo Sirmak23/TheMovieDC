@@ -1,24 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:screenOrientation="landscape"
-    android:layout_height="match_parent"
     tools:context=".ui.Fragment.videoPlayerFragment">
-<ImageView
-    android:id="@+id/videoBackgorunds"
-    android:layout_width="match_parent"
-    android:scaleType="fitXY"
-    android:layout_height="match_parent"
-    android:background="@drawable/movie_pos"/>
+
+    <ImageView
+        android:id="@+id/videoBackgorunds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/empty_backgrounds"
+        android:scaleType="fitXY"
+        android:visibility="invisible" />
 
     <WebView
-        android:background="@drawable/movie_pos"
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:screenOrientation="userLandscape" />
+        android:background="@drawable/movie_pos"
+        android:screenOrientation="userLandscape"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/movieTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="297dp"
+        android:text="THE MOVIE DC"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="363dp"
+        android:layout_marginEnd="16dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/horizontal_progressbar" />
 </RelativeLayout>

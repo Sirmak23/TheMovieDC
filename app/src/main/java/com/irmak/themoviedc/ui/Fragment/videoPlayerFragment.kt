@@ -2,37 +2,44 @@ package com.irmak.themoviedc.ui.Fragment
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentVideoPlayerBinding
+import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
 import com.irmak.themoviedc.model.trailer.TrailerResponse
-import com.irmak.themoviedc.repository.PopularMovieRepository
-import com.irmak.themoviedc.repository.TrailerRepository
+import com.irmak.themoviedc.model.trailer.TvTrailerResponse
+import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
+import com.irmak.themoviedc.repository.*
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.PopularMovieViewModel
-import com.irmak.themoviedc.viewModel.TrailerViewModel
-import com.irmak.themoviedc.viewModel.viewModelFactory.PopularMovieViewModelFactory
-import com.irmak.themoviedc.viewModel.viewModelFactory.TrailerViewModelFactory
+import com.irmak.themoviedc.ui.extensions.loadImage
+import com.irmak.themoviedc.viewModel.*
+import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
 
+var ChoiceVideo: String = "null"
 
 @Suppress("DEPRECATION")
 class videoPlayerFragment : Fragment() {
     private lateinit var binding: FragmentVideoPlayerBinding
+
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -50,11 +57,34 @@ class videoPlayerFragment : Fragment() {
         binding.webView.settings.apply {
             javaScriptEnabled = true
             mediaPlaybackRequiresUserGesture = false
-//        popularMovieViewModel.getPopularMovieDetail()
-//        popularMovieViewModel.popularMovieDetailList.observe(
-//            viewLifecycleOwner,
-//            ::movieDetailObserver
-//        )
+
+            val webView = binding.webView
+            val progressBar = binding.progressBar
+
+            webView.settings.javaScriptEnabled = true
+            webView.webChromeClient = object : WebChromeClient() {
+                override fun onProgressChanged(view: WebView, newProgress: Int) {
+                    progressBar.progress = newProgress
+                    if (newProgress == 100) {
+                        progressBar.visibility = ProgressBar.INVISIBLE
+                        webView.visibility = WebView.VISIBLE
+                    } else {
+                        progressBar.visibility = ProgressBar.VISIBLE
+                    }
+                }
+            }
+
+            webView.webViewClient = object : WebViewClient() {
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    progressBar.visibility = ProgressBar.VISIBLE
+                }
+
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    progressBar.visibility = ProgressBar.INVISIBLE
+                }
+            }
 
 //        binding.webView.settings.apply {
 //            javaScriptEnabled = true
@@ -69,10 +99,25 @@ class videoPlayerFragment : Fragment() {
                 requireContext(),
                 com.irmak.themoviedc.R.anim.slide_in_right
             )
-            binding.videoBackgorunds.startAnimation(animation)
-            return binding.root
+//            binding.movieTitleTextView.visibility = View.VISIBLE
+            val myImageView = binding.videoBackgorunds
+
+            val fadeInAnimation = AlphaAnimation(0f, 1f)
+            fadeInAnimation.duration = 1000
+            fadeInAnimation.fillAfter = true
+            fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {}
+                override fun onAnimationRepeat(animation: Animation?) {}
+
+            })
+
+            myImageView.startAnimation(fadeInAnimation)
+            myImageView.visibility = ImageView.VISIBLE
         }
+        return binding.root
     }
+
 
 //override fun onDetach() {
 //    super.onDetach()
@@ -86,6 +131,12 @@ class videoPlayerFragment : Fragment() {
     private val trailerViewModel: TrailerViewModel by viewModels {
         TrailerViewModelFactory(trailerRepository)
     }
+    private val tvTrailerRepository: TvTrailerRepository by lazy {
+        TvTrailerRepository(movieApi)
+    }
+    private val TvTrailerViewModel: TvTrailerViewModel by viewModels {
+        TvTrailerViewModelFactory(tvTrailerRepository)
+    }
     private val retrofit: Retrofit by lazy {
         RetrofitClient.getRetrofit()
     }
@@ -98,13 +149,34 @@ class videoPlayerFragment : Fragment() {
     private val popularMovieViewModel: PopularMovieViewModel by viewModels {
         PopularMovieViewModelFactory(popularMovieRepository)
     }
+    private val tvDetailRepository: TvDetailRepository by lazy {
+        TvDetailRepository(movieApi)
+    }
+    private val tvDetailViewModel: TvDetailViewModel by viewModels {
+        TvDetailViewModelFactory(tvDetailRepository)
+    }
+
     var video: String = "null"
+    var tvVideo: String = "null"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         trailerViewModel.getVideo()
+        TvTrailerViewModel.getTvVideo()
         trailerViewModel.trailerList.observe(viewLifecycleOwner, ::trailerObserve)
+        TvTrailerViewModel.tvTrailerList.observe(viewLifecycleOwner, ::tvTrailerObserve)
+        popularMovieViewModel.getPopularMovieDetail()
+        tvDetailViewModel.getTvDetail()
+        if (ChoiceVideo == "movie") {
+            popularMovieViewModel.popularMovieDetailList.observe(
+                viewLifecycleOwner,
+                ::movieDetailObserver
+            )
+        } else if (ChoiceVideo == "tv") {
+            tvDetailViewModel.tvDetailList.observe(viewLifecycleOwner, ::tvDetailObserver)
+        }
+
         val main = activity as MainActivity
         main.setBottomNavigationViewVisibility(false)
 
@@ -116,7 +188,10 @@ class videoPlayerFragment : Fragment() {
                 requireActivity().onBackPressed()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
     }
 
 //        requireActivity().onBackPressedDispatcher.addCallback(
@@ -134,10 +209,33 @@ class videoPlayerFragment : Fragment() {
 //            })
 
 
+    private fun movieDetailObserver(response: PopularMovieDetailResponse?) {
+        binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1066_and_h600_bestv2${response?.backdrop_path}")
+
+    }
+
+    private fun tvDetailObserver(response: TvDetailModel) {
+        binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1066_and_h600_bestv2${response.backdrop_path}")
+
+    }
+
     fun trailerObserve(resp: TrailerResponse?) {
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             video = resp.results[0].key?.toString() ?: ""
-            updateWebView()
+            if (ChoiceVideo == "movie") {
+                updateWebView()
+            }
+        } else {
+            // Hata durumunda yapılacak işlemler
+        }
+    }
+
+    fun tvTrailerObserve(resp: TvTrailerResponse?) {
+        if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
+            tvVideo = resp.results[0].key.toString()
+            if (ChoiceVideo == "tv") {
+                updateTvWebView()
+            }
         } else {
             // Hata durumunda yapılacak işlemler
         }
@@ -168,6 +266,46 @@ class videoPlayerFragment : Fragment() {
                 </head>
                 <body>
             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$video" frameborder="0" allowfullscreen autoplay ></iframe>
+                    </body>
+                 </html>
+            """.trimIndent()
+
+            binding.webView.settings.apply {
+                javaScriptEnabled = true
+                useWideViewPort = false
+                loadWithOverviewMode = false
+            }
+
+            binding.webView.loadDataWithBaseURL(null, iframe, "text/html", "utf-8", null)
+
+        }
+    }
+
+    private fun updateTvWebView() {
+        if (tvVideo == "null") {
+            Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            val iframe = """
+    <html>
+        <head>
+            <style type="text/css">
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    overflow: hidden;
+                }
+                iframe {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+                    </style>
+                </head>
+                <body>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$tvVideo" frameborder="0" allowfullscreen autoplay ></iframe>
                     </body>
                  </html>
             """.trimIndent()

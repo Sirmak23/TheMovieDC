@@ -58,6 +58,7 @@ class DetailFragment : Fragment() {
         )
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
         binding.popularDetailBack.startAnimation(animation)
+        ChoiceVideo = "movie"
         return binding.root
     }
 
@@ -113,11 +114,7 @@ class DetailFragment : Fragment() {
                     findNavController().navigate(action)
                 }
             }
-//        popularMovieViewModel.popularMovieDetailList.observe(
-//            viewLifecycleOwner,
-//            ::movieDetailObserver
-//        )
-//        popularMovieViewModel.getPopularMovieDetail()
+
         trailerViewModel.trailerList.observe(viewLifecycleOwner, ::trailerObserve)
 
     }
@@ -139,7 +136,7 @@ class DetailFragment : Fragment() {
         binding.DetailYt.text = "Y.T: ${response?.release_date}"
         binding.DetailOzetTExt.text = response?.overview
         binding.movieDEtailImageView.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response?.poster_path}")
-        binding.popularDetailBack.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response?.backdrop_path}")
+        binding.popularDetailBack.loadImage("https://image.tmdb.org/t/p/w300_and_h450_bestv2${response?.backdrop_path}")
 //        binding.popularDetailBack.loadImage("https://www.themoviedb.org/t/p/w533_and_h300_bestv2${response?.backdrop_path}")
         binding.imdbDetailPhoto2.loadImage("https://ia.media-imdb.com/images/M/MV5BODc4MTA3NjkzNl5BMl5BcG5nXkFtZTgwMDg0MzQ2OTE@._V1_.png")
     }

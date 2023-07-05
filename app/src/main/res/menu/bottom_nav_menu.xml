@@ -3,7 +3,7 @@
     <item
         android:id="@+id/popularFragment"
         android:icon="@drawable/ic_popular"
-        android:title="Popüler"/>
+        android:title="Popüler Filmler"/>
 
     <item
         android:id="@+id/tvPopularFragment"
@@ -13,7 +13,7 @@
     <item
         android:id="@+id/upcomingFragment"
         android:icon="@drawable/ic_up_coming"
-        android:title="Upcoming"/>
+        android:title="Yakında"/>
 
     <item
         android:id="@+id/searchFragment"

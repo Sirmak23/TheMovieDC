@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:background="@color/black"
         app:cardCornerRadius="20dp"

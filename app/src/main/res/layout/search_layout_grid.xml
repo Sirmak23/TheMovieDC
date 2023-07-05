@@ -37,6 +37,7 @@
                 <ImageView
                     android:id="@+id/posterViewS"
                     android:layout_width="match_parent"
+                    android:background="@drawable/empty_backgrounds"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY" />
 

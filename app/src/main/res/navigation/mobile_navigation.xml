@@ -80,5 +80,20 @@
         android:id="@+id/tvPopularFragment"
         android:name="com.irmak.themoviedc.ui.Fragment.TvPopularFragment"
         android:label="fragment_tv_popular"
-        tools:layout="@layout/fragment_tv_popular" />
+        tools:layout="@layout/fragment_tv_popular" >
+        <action
+            android:id="@+id/action_tvPopularFragment_to_tvDetailFragment"
+            app:destination="@id/tvDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tvDetailFragment"
+        android:name="com.irmak.themoviedc.ui.Fragment.TvDetailFragment"
+        android:label="TvDetailFragment" >
+        <action
+            android:id="@+id/action_tvDetailFragment_to_tvPopularFragment"
+            app:destination="@id/tvPopularFragment" />
+        <action
+            android:id="@+id/action_tvDetailFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+    </fragment>
 </navigation>

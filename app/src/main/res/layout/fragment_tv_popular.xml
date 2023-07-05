@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
+        android:id="@+id/swiperefreshTv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@id/tmdcText"
@@ -52,7 +52,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPagerTv"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="500dp"
                     android:background="#A600010E"
                     android:paddingStart="80dp"
                     android:paddingTop="15dp"

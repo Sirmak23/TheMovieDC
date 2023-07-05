@@ -1,11 +1,14 @@
 package com.irmak.themoviedc.ui.Fragment
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.irmak.themoviedc.MainActivity
@@ -38,6 +41,10 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater,container,false)
         val main = activity as MainActivity
         main.setBottomNavigationViewVisibility(true)
+        binding.searchBar.setOnClickListener {
+            binding.searchView.isIconified = false
+            binding.searchView.requestFocusFromTouch()
+        }
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 // Arama butonuna basıldığında gerçekleştirilecek işlemler

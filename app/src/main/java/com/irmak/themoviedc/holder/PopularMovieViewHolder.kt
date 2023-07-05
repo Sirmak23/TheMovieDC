@@ -11,10 +11,10 @@ class PopularMovieViewHolder(val binding: FragmentDetailBinding):RecyclerView.Vi
 
     @SuppressLint("SetTextI18n")
     fun MovieDetailBinder(response: PopularMovieDetailResponse) {
-        binding.MovieDetailNameTextView.text = response.title
-        binding.imdbDetailTextView.text = "${response.vote_average}/10"
-        binding.DetailOzetTExt.text = response.overview
-        binding.movieDEtailImageView.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
+//        binding.MovieDetailNameTextView.text = response.title
+//        binding.imdbDetailTextView.text = "${response.vote_average}/10"
+//        binding.DetailOzetTExt.text = response.overview
+//        binding.movieDEtailImageView.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
 
     }
 }

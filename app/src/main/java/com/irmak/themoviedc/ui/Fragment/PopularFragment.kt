@@ -20,8 +20,7 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.*
-import com.irmak.themoviedc.data.remote.api.MovieApi
-import com.irmak.themoviedc.data.remote.api.pageNumber
+import com.irmak.themoviedc.data.remote.api.*
 import com.irmak.themoviedc.databinding.FragmentPopularBinding
 import com.irmak.themoviedc.holder.frm
 import com.irmak.themoviedc.model.nowPlayingModel.ResultNP
@@ -191,14 +190,19 @@ class PopularFragment : Fragment() {
 
     private fun swipeToRefresh() {
         binding.swiperefresh.setOnRefreshListener {
-            updateApp()
-            movieViewModel.getPopularList()
+//            updateApp()
+//            pageNumber +=1
+//            movieViewModel.getPopularList()
+            pageNumberNpStory +=1
+            storyViewModel.getPlayVidoeMovie()
+            pageNumberTopRated +=1
+            topRatedViewModel.getTopRatedMovie()
             binding.swiperefresh.isRefreshing = false
         }
     }
 
 
-    // Fragment'ın onCreate() veya onCreateView() metodunda bu yöntemi çağırabilirsiniz.
+    // Fragment'ın onCreate() veya onCreateView() metodunda bu yöntemi çağırabilirim.
     private fun setupAutoScroll() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewNowPlaying.layoutManager = layoutManager
@@ -220,13 +224,13 @@ class PopularFragment : Fragment() {
         }
     }
 
-    // Fragment'ın onResume() metodunda bu yöntemi çağırarak otomatik sayfa geçişini başlatabilirsiniz.
+    // Fragment'ın onResume() metodunda bu yöntemi çağırarak otomatik sayfa geçişini başlatabilirim
     private fun startAutoScroll() {
         isAutoScrollEnabled = true
         autoScrollHandler.postDelayed(autoScrollRunnable, 5000) // 5 saniye
     }
 
-    // Fragment'ın onPause() metodunda bu yöntemi çağırarak otomatik sayfa geçişini durdurabilirsiniz.
+    // Fragment'ın onPause() da bu fonksiyonu çağırarak otomatik sayfa geçişini durdurabilirim
     private fun stopAutoScroll() {
         isAutoScrollEnabled = false
         autoScrollHandler.removeCallbacks(autoScrollRunnable)

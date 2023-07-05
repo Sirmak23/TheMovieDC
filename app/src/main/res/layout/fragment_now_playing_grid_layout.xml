@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="270dp"
+    android:layout_height="300dp"
     android:layout_marginLeft="3dp"
     android:layout_marginRight="3dp"
     android:orientation="vertical">
@@ -26,7 +26,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewNP"
                 android:layout_width="150dp"
-                android:layout_height="250dp"
+                android:layout_height="285dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="15dp"
@@ -37,6 +37,7 @@
                     android:id="@+id/posterViewNP"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/empty_backgrounds"
                     android:scaleType="fitXY" />
 
             </androidx.cardview.widget.CardView>

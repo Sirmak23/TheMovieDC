@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.adapter.TvPopularAdapter
 import com.irmak.themoviedc.adapter.TvTopRatedAdapter
-import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.*
 import com.irmak.themoviedc.databinding.FragmentTvPopularBinding
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse
 import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse
@@ -50,6 +51,8 @@ class TvPopularFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTvPopularBinding.inflate(inflater, container, false)
+        val main = activity as MainActivity
+        main.setBottomNavigationViewVisibility(true)
         return binding.root
     }
 
@@ -87,6 +90,7 @@ class TvPopularFragment : Fragment() {
         tvPopularObserve()
         tvRatedObserve()
         setupTransformer()
+        swipeToRefresh()
     }
 
     private fun initViewPager() {
@@ -109,6 +113,16 @@ class TvPopularFragment : Fragment() {
                 layoutManager = GridLayoutManager(requireContext(), 2)
 
             }
+        }
+    }
+    private fun swipeToRefresh() {
+        binding.swiperefreshTv.setOnRefreshListener {
+            tvPopuplarPageNo +=1
+            tvPopularViewModel.getPopularTv()
+            tvTopRatedPageNo +=1
+            tvRatedViewModel.getTvRated()
+            binding.viewPagerTv.setCurrentItem(0,true)
+            binding.swiperefreshTv.isRefreshing = false
         }
     }
 
