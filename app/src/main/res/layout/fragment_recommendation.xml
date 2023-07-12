@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    tools:context=".MainActivity">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:text=" Sizin için öneriliyor... "
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerRecom"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:background="#A600010E"
+            android:paddingStart="80dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="80dp"
+            android:paddingBottom="15dp" />
+
+
+</LinearLayout>
