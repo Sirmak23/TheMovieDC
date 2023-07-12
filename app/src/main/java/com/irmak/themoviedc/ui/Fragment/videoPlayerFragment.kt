@@ -34,7 +34,6 @@ import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
 
 var ChoiceVideo: String = "null"
-
 @Suppress("DEPRECATION")
 class videoPlayerFragment : Fragment() {
     private lateinit var binding: FragmentVideoPlayerBinding
@@ -51,7 +50,6 @@ class videoPlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentVideoPlayerBinding.inflate(inflater, container, false)
-
         binding.webView.webChromeClient = WebChromeClient()
         binding.webView.webViewClient = WebViewClient()
         binding.webView.settings.apply {
@@ -168,6 +166,7 @@ class videoPlayerFragment : Fragment() {
         TvTrailerViewModel.tvTrailerList.observe(viewLifecycleOwner, ::tvTrailerObserve)
         popularMovieViewModel.getPopularMovieDetail()
         tvDetailViewModel.getTvDetail()
+        updateWebView()
         if (ChoiceVideo == "movie") {
             popularMovieViewModel.popularMovieDetailList.observe(
                 viewLifecycleOwner,
@@ -210,23 +209,26 @@ class videoPlayerFragment : Fragment() {
 
 
     private fun movieDetailObserver(response: PopularMovieDetailResponse?) {
-        binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1066_and_h600_bestv2${response?.backdrop_path}")
+        binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1280_and_h720_bestv2${response?.backdrop_path}")
 
     }
 
     private fun tvDetailObserver(response: TvDetailModel) {
-        binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1066_and_h600_bestv2${response.backdrop_path}")
+        binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1280_and_h720_bestv2${response.backdrop_path}")
 
     }
 
     fun trailerObserve(resp: TrailerResponse?) {
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             video = resp.results[0].key?.toString() ?: ""
+//            if (videoUrls.contains(video)){
+//            }else{
+//                videoUrls.add(video)
+//            }
             if (ChoiceVideo == "movie") {
                 updateWebView()
             }
         } else {
-            // Hata durumunda yapılacak işlemler
         }
     }
 
@@ -237,89 +239,160 @@ class videoPlayerFragment : Fragment() {
                 updateTvWebView()
             }
         } else {
-            // Hata durumunda yapılacak işlemler
         }
     }
 
-    private fun updateWebView() {
-        if (video == "null") {
-            Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            val iframe = """
-    <html>
-        <head>
-            <style type="text/css">
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    overflow: hidden;
-                }
-                iframe {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                }
-                    </style>
-                </head>
-                <body>
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$video" frameborder="0" allowfullscreen autoplay ></iframe>
-                    </body>
-                 </html>
-            """.trimIndent()
+//    private fun updateWebView() {
+//        if (video == "null") {
+//            Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
+//                .show()
+//        } else {
+//            val iframe = """
+//    <html>
+//        <head>
+//            <style type="text/css">
+//                html, body {
+//                    margin: 0;
+//                    padding: 0;
+//                    overflow: hidden;
+//                }
+//                iframe {
+//                    position: absolute;
+//                    top: 0;
+//                    left: 0;
+//                    width: 100%;
+//                    height: 100%;
+//                }
+//                    </style>
+//                </head>
+//                <body>
+//            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$video" frameborder="0" allowfullscreen autoplay ></iframe>
+//                    </body>
+//                 </html>
+//            """.trimIndent()
+//
+//            binding.webView.settings.apply {
+//                javaScriptEnabled = true
+//                useWideViewPort = false
+//                loadWithOverviewMode = false
+//            }
+//
+//            binding.webView.loadDataWithBaseURL(null, iframe, "text/html", "utf-8", null)
+//
+//        }
+//    }
+//
+//    private fun updateTvWebView() {
+//        if (tvVideo == "null") {
+//            Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
+//                .show()
+//        } else {
+//            val iframe = """
+//    <html>
+//        <head>
+//            <style type="text/css">
+//                html, body {
+//                    margin: 0;
+//                    padding: 0;
+//                    overflow: hidden;
+//                }
+//                iframe {
+//                    position: absolute;
+//                    top: 0;
+//                    left: 0;
+//                    width: 100%;
+//                    height: 100%;
+//                }
+//                    </style>
+//                </head>
+//                <body>
+//            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$tvVideo" frameborder="0" allowfullscreen autoplay ></iframe>
+//                    </body>
+//                 </html>
+//            """.trimIndent()
+//
+//            binding.webView.settings.apply {
+//                javaScriptEnabled = true
+//                useWideViewPort = false
+//                loadWithOverviewMode = false
+//            }
+//
+//            binding.webView.loadDataWithBaseURL(null, iframe, "text/html", "utf-8", null)
+//
+//        }
+//    }
 
-            binding.webView.settings.apply {
+    private fun updateWebView() {
+        // ...
+
+        val iframe = """
+        <html>
+            <head>
+                <style type="text/css">
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        overflow: hidden;
+                    }
+                    iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                    }
+                </style>
+            </head>
+            <body>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$video?autoplay=1" frameborder="0" allowfullscreen></iframe>
+            </body>
+        </html>
+    """.trimIndent()
+
+        binding.webView.settings.apply {
                 javaScriptEnabled = true
                 useWideViewPort = false
                 loadWithOverviewMode = false
             }
 
             binding.webView.loadDataWithBaseURL(null, iframe, "text/html", "utf-8", null)
-
-        }
     }
 
     private fun updateTvWebView() {
-        if (tvVideo == "null") {
-            Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            val iframe = """
-    <html>
-        <head>
-            <style type="text/css">
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    overflow: hidden;
-                }
-                iframe {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                }
-                    </style>
-                </head>
-                <body>
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$tvVideo" frameborder="0" allowfullscreen autoplay ></iframe>
-                    </body>
-                 </html>
-            """.trimIndent()
+        // ...
 
-            binding.webView.settings.apply {
-                javaScriptEnabled = true
-                useWideViewPort = false
-                loadWithOverviewMode = false
-            }
+        val iframe = """
+        <html>
+            <head>
+                <style type="text/css">
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        overflow: hidden;
+                    }
+                    iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                    }
+                </style>
+            </head>
+            <body>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$tvVideo?autoplay=1" frameborder="0" allowfullscreen></iframe>
+            </body>
+        </html>
+    """.trimIndent()
 
-            binding.webView.loadDataWithBaseURL(null, iframe, "text/html", "utf-8", null)
-
+        binding.webView.settings.apply {
+            javaScriptEnabled = true
+            useWideViewPort = false
+            loadWithOverviewMode = false
         }
-    }
+
+        binding.webView.loadDataWithBaseURL(null, iframe, "text/html", "utf-8", null)    }
+
 
 //    private fun movieDetailObserver(response: PopularMovieDetailResponse?) {
 //        binding.videoBackgorunds.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response?.backdrop_path}")

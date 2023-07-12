@@ -9,6 +9,8 @@ data class SearchResponse(
     val genre_ids: List<Int>? = null,
     val id: Int? = null,
     val original_title: String? = null,
+    val original_name: String? = null,
+    val name: String? = null,
     val original_language: String? = null,
     val title: String? = null,
     val media_type:String?=null,

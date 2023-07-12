@@ -61,17 +61,11 @@ class EntryActivity : AppCompatActivity() {
 //            .setContentText("İnternet bağlantısı için wifi ayarlarına gitmek ister misiniz?")
             .setCancelButton(
                 "Kapat"
-            ) { sDialog ->  sDialog.dismiss()
-                finish()}
-            .setConfirmText("Ayarlar ")
-            .setConfirmClickListener { sDialog ->
-                sDialog.dismiss()
-                startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
-                alertAgain()
-            }
+            ) { sDialog ->  sDialog.dismiss() }
             .show()
 
     }
+
     private fun alertAgain(){
         SweetAlertDialog(this)
             .setTitleText("Tekrar dene")

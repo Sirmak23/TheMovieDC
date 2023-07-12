@@ -1,6 +1,7 @@
 package com.irmak.themoviedc.model.tvTopRatedModel
 
 data class TvTopRatedResponse(
+    val origin_country: List<String>? = null,
     val poster_path: String? = null ,
     val backdrop_path: String? = null ,
     val adult: Boolean?= null,

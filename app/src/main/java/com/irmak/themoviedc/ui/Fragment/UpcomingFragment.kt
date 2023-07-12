@@ -1,5 +1,6 @@
 package com.irmak.themoviedc.ui.Fragment
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.UpcomingAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
@@ -34,6 +36,9 @@ private lateinit var binding:FragmentUpcomingBinding
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUpcomingBinding.inflate(inflater,container,false)
+        val main = activity as MainActivity
+        main.setBottomNavigationViewVisibility(true)
+        ChoiceVideo = "movie"
         return binding.root
     }
 

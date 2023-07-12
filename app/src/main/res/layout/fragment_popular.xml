@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/image_back"
+    android:background="#020E23"
     tools:context=".MainActivity">
 
     <TextView
@@ -60,21 +60,12 @@
                 android:layout_marginTop="25dp"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewNowPlaying"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/recyler_popular_background"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    tools:listitem="@layout/fragment_now_playing_grid_layout" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_marginTop="5dp"
-                    android:text=" Vizyonda >"
+                    android:text=" Gösterimde >"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -87,6 +78,32 @@
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/fragment_video_layout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerWebview"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/empty_backgrounds"
+                    android:layout_height="280dp"
+                    tools:listitem="@layout/webview_layout"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="5dp"
+                    android:text=" Popüler filmler >"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewNowPlaying"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/recyler_popular_background"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    tools:listitem="@layout/fragment_now_playing_grid_layout" />
 
                 <TextView
                     android:layout_width="match_parent"

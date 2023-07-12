@@ -6,53 +6,41 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.widget.ImageButton
-import android.widget.RelativeLayout
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.*
 import com.irmak.themoviedc.data.remote.api.*
 import com.irmak.themoviedc.databinding.FragmentPopularBinding
 import com.irmak.themoviedc.holder.frm
+import com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel
 import com.irmak.themoviedc.model.nowPlayingModel.ResultNP
 import com.irmak.themoviedc.model.popularModel.MovieRespons
 import com.irmak.themoviedc.model.storyModel.ResultStoryNP
 import com.irmak.themoviedc.model.topRatedModel.topRatedResult
-import com.irmak.themoviedc.repository.NowPlayingRepository
-import com.irmak.themoviedc.repository.PopularListRepository
-import com.irmak.themoviedc.repository.StoryRepository
-import com.irmak.themoviedc.repository.TopRatedRepository
+import com.irmak.themoviedc.model.trailer.TrailerResponse
+import com.irmak.themoviedc.repository.*
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.MovieViewModel
-import com.irmak.themoviedc.viewModel.NowPlayingViewModel
-import com.irmak.themoviedc.viewModel.StoryViewModel
-import com.irmak.themoviedc.viewModel.TopRatedViewModel
-import com.irmak.themoviedc.viewModel.viewModelFactory.MovieViewModelFactory
-import com.irmak.themoviedc.viewModel.viewModelFactory.NowPlayingViewModelFactory
-import com.irmak.themoviedc.viewModel.viewModelFactory.StoryViewModelFactory
-import com.irmak.themoviedc.viewModel.viewModelFactory.TopRatedViewModelFactory
+import com.irmak.themoviedc.viewModel.*
+import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
-import java.util.*
 import kotlin.math.abs
 import kotlin.properties.Delegates
 
 lateinit var recPop: RecyclerView
-
-@Suppress("CAST_NEVER_SUCCEEDS")
+var isAutoScrollEnabledS = false
+val videoIds = ArrayList<Int?>()
+var mvID :Int? = 1
 class PopularFragment : Fragment() {
-    lateinit var cAdapter: ConcatAdapter
     private lateinit var binding: FragmentPopularBinding
     private val autoScrollHandler = Handler()
+    private val autoScrollHandlerS = Handler()
     private lateinit var autoScrollRunnable: Runnable
+    private lateinit var autoScrollRunnableS: Runnable
     private var isAutoScrollEnabled = false
 
     var movieList: List<MovieRespons>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
@@ -86,18 +74,22 @@ class PopularFragment : Fragment() {
     ): View {
         binding = FragmentPopularBinding.inflate(inflater, container, false)
         frm = "popular"
+        ChoiceVideo = "movie"
         setupAutoScroll()
+        setupAutoVideo()
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         startAutoScroll()
+        startAutoVideo()
     }
 
     override fun onPause() {
         super.onPause()
         stopAutoScroll()
+        stopAutoVideo()
     }
 
     private val movieAdapter: MovieAdapter by lazy {
@@ -154,8 +146,14 @@ class PopularFragment : Fragment() {
     private val topRatedViewModel: TopRatedViewModel by viewModels {
         TopRatedViewModelFactory(topRatedRepository)
     }
+    private val trailerRepository: TrailerRepository by lazy {
+        TrailerRepository(movieApi)
+    }
+    private val trailerViewModel: TrailerViewModel by viewModels {
+        TrailerViewModelFactory(trailerRepository)
+    }
 
-
+    var video: String = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val main = activity as MainActivity
@@ -164,7 +162,9 @@ class PopularFragment : Fragment() {
         nowPlayingViewModel.getNowPlayMovie()
         storyViewModel.getPlayVidoeMovie()
         topRatedViewModel.getTopRatedMovie()
-//        initConcatBinding()
+        nowPlayingViewModel.nowPlaylist.observe(viewLifecycleOwner, ::getVideoIDs)
+        trailerViewModel.getVideo()
+        trailerViewModel.trailerList.observe(viewLifecycleOwner, ::trailerObserve)
         initVide0NpBinding()
         initNpGRidBinding()
         observer()
@@ -173,36 +173,65 @@ class PopularFragment : Fragment() {
         observerTopRated()
         swipeToRefresh()
         upToPagePopular()
-//        AutoChange()
         backInvisible()
         initViewPager()
         setupTransformer()
-//        genreTyp()
-    }
-//    private fun genreTyp(){
-//        binding.ButtonGenre.setOnClickListener {
-//            GenreType = 2
-//            movieViewModel.getPopularList()
-//
-//        }
-//    }
+        binding.recyclerWebview.setOnClickListener {
+            trailerViewModel.getVideo()
 
+        }
+
+    }
+    val videoUr = arrayListOf<String>()
+    val videos = listOf("4SIITjPijKg","N0S-PGgbu90","tOAuJHu5Tg0")
+
+
+    private fun getVideoIDs(result: NowPlayingModel) {
+        for (x in 0..4) {
+            val vID = result.results?.get(x)?.id
+            videoIds.add(vID)
+            Log.e("Delegates", "videoIds -> ${videoIds}")
+        }
+            getVideoKey()
+    }
+    private fun getVideoKey(){
+        for (abc in videoIds) {
+           movieIdNumber = abc
+            trailerViewModel.getVideo()
+            Log.e("Delegates", "abc -> ${abc}")
+            Log.e("movieIdNumber", "movieIdNumber -> ${movieIdNumber}")
+        }
+    }
+    fun trailerObserve(resp: TrailerResponse?) {
+        if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
+            video = resp.results[0].key.toString()
+            videoUr.add(video)
+            Log.e("Delegates", "video -> ${video}")
+            Log.e("videoUr", "videoUr -> ${videoUr}")
+        }
+        initweb()
+    }
+
+    private fun initweb() {
+        with(binding) {
+            recyclerWebview.apply {
+                val videoAdapter = VideoAdapter(videoUr)
+                adapter = videoAdapter
+            }
+        }
+    }
 
     private fun swipeToRefresh() {
         binding.swiperefresh.setOnRefreshListener {
-//            updateApp()
-//            pageNumber +=1
-//            movieViewModel.getPopularList()
-            pageNumberNpStory +=1
+            pageNumberNpStory += 1
             storyViewModel.getPlayVidoeMovie()
-            pageNumberTopRated +=1
+            pageNumberTopRated += 1
             topRatedViewModel.getTopRatedMovie()
             binding.swiperefresh.isRefreshing = false
         }
     }
 
 
-    // Fragment'ın onCreate() veya onCreateView() metodunda bu yöntemi çağırabilirim.
     private fun setupAutoScroll() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewNowPlaying.layoutManager = layoutManager
@@ -210,7 +239,7 @@ class PopularFragment : Fragment() {
         autoScrollRunnable = Runnable {
             val currentPosition = layoutManager.findFirstVisibleItemPosition()
             val nextPosition = if (currentPosition == layoutManager.itemCount - 1) {
-                pageNumber +=1
+                pageNumber += 1
                 movieViewModel.getPopularList()
                 0
             } else {
@@ -224,42 +253,64 @@ class PopularFragment : Fragment() {
         }
     }
 
-    // Fragment'ın onResume() metodunda bu yöntemi çağırarak otomatik sayfa geçişini başlatabilirim
+    private fun setupAutoVideo() {
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerWebview.layoutManager = layoutManager
+
+        autoScrollRunnableS = Runnable {
+            val currentPosition = layoutManager.findFirstVisibleItemPosition()
+            val nextPosition = if (currentPosition == layoutManager.itemCount - 1) {
+//                pageNumber +=1
+//                movieViewModel.getPopularList()
+                0
+            } else {
+                currentPosition + 1
+            }
+            binding.recyclerWebview.smoothScrollToPosition(nextPosition)
+
+
+            if (isAutoScrollEnabledS) {
+                autoScrollHandlerS.postDelayed(autoScrollRunnableS, 180000) // 180 saniye
+            }
+        }
+    }
+//private fun setupAutoVideo() {
+//    val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+//    binding.recyclerWebview.layoutManager = layoutManager
+//
+//    autoScrollRunnable2 = Runnable {
+//        val currentPosition = layoutManager.findFirstVisibleItemPosition()
+//        val nextPosition = if (currentPosition == 0) {
+//            layoutManager.itemCount - 1
+//        } else {
+//            currentPosition - 1
+//        }
+//        binding.recyclerWebview.smoothScrollToPosition(nextPosition)
+//
+//        if (isAutoScrollEnabled2) {
+//            autoScrollHandler2.postDelayed(autoScrollRunnable2, 5000) // 5 saniye
+//        }
+//    }
+//}
+
     private fun startAutoScroll() {
         isAutoScrollEnabled = true
         autoScrollHandler.postDelayed(autoScrollRunnable, 5000) // 5 saniye
     }
 
-    // Fragment'ın onPause() da bu fonksiyonu çağırarak otomatik sayfa geçişini durdurabilirim
+    private fun startAutoVideo() {
+        isAutoScrollEnabledS = true
+        autoScrollHandlerS.postDelayed(autoScrollRunnableS, 180000) // 180 saniye
+    }
+
     private fun stopAutoScroll() {
         isAutoScrollEnabled = false
         autoScrollHandler.removeCallbacks(autoScrollRunnable)
     }
-    private fun AutoChange() {
-        val layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewNowPlaying.layoutManager = layoutManager
-        val timer = Timer()
-        val handler = Handler()
-        val runnable = object : Runnable {
-            override fun run() {
-                val currentPosition = layoutManager.findFirstVisibleItemPosition()
-                val nextPosition =
-                    if (currentPosition == layoutManager.itemCount - 1) {
-                        0
-                    } else currentPosition + 1
-                binding.recyclerViewNowPlaying.smoothScrollToPosition(nextPosition)
-//                    if (nextPosition == 0) {
-//                        pageNumber += 1
-//                    }
-                handler.postDelayed(this, 5000) // 5 saniye
-            }
-        }
-        timer.schedule(object : TimerTask() {
-            override fun run() {
-                handler.post(runnable)
-            }
-        }, 5000) // 5 saniye
+
+    private fun stopAutoVideo() {
+        isAutoScrollEnabledS = false
+        autoScrollHandlerS.removeCallbacks(autoScrollRunnableS)
     }
 
     private fun updateApp() {
@@ -307,7 +358,6 @@ class PopularFragment : Fragment() {
         binding.viewPagerTopRated.setPageTransformer(transformer)
     }
 
-
     private fun backInvisible() {
         with(binding) {
             if (binding.popularScroll.scrollY == 0) {
@@ -349,6 +399,7 @@ class PopularFragment : Fragment() {
             this.nowPlayList = nowPlayList.results
         }
     }
+
 }
 // concat kullanmak için
 //    private fun initConcatBinding() {
@@ -383,4 +434,29 @@ class PopularFragment : Fragment() {
 //            })
 //        }
 //    }
-
+//    private fun AutoChange() {
+//        val layoutManager =
+//            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        binding.recyclerWebview.layoutManager = layoutManager
+//        val timer = Timer()
+//        val handler = Handler()
+//        val runnable = object : Runnable {
+//            override fun run() {
+//                val currentPosition = layoutManager.findFirstVisibleItemPosition()
+//                val nextPosition =
+//                    if (currentPosition == layoutManager.itemCount - 1) {
+//                        0
+//                    } else currentPosition + 1
+//                binding.recyclerWebview.smoothScrollToPosition(nextPosition)
+////                    if (nextPosition == 0) {
+////                        pageNumber += 1
+////                    }
+//                handler.postDelayed(this, 5000) // 5 saniye
+//            }
+//        }
+//        timer.schedule(object : TimerTask() {
+//            override fun run() {
+//                handler.post(runnable)
+//            }
+//        }, 5000) // 5 saniye
+//    }

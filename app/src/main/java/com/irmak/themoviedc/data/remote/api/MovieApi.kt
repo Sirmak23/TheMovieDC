@@ -2,10 +2,13 @@ package com.irmak.themoviedc.data.remote.api
 
 import com.irmak.themoviedc.model.UpcomingModel.UpcomingModel
 import com.irmak.themoviedc.model.actorModel.ActorList
+import com.irmak.themoviedc.model.actorModel.ActorMovies
 import com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel
 import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
 import com.irmak.themoviedc.model.popularModel.PopularMovieResponse
+import com.irmak.themoviedc.model.recommendationModel.RecommendationResponse
 import com.irmak.themoviedc.model.search.SearchModel
+import com.irmak.themoviedc.model.seasonInfoModel.SeasonInfoResponse
 import com.irmak.themoviedc.model.storyModel.StoryModel
 import com.irmak.themoviedc.model.topRatedModel.TopRatedRespone
 import com.irmak.themoviedc.model.trailer.TrailerResponse
@@ -19,6 +22,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 var pageNumber: Int = 1
+var seasonNo: Int = 1
+var personId: Int? = 1
 var movieIdNumber: Int? = 420888
 var tvIdNumber: Int? = 71912
 var searchWord: String? = ""
@@ -126,5 +131,26 @@ interface MovieApi {
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
     ): TvDetailModel
+
+    @GET("tv/{series_id}/season/{season_number}")
+    suspend fun getSeasonDetail(
+        @Path("series_id") tvId: Int? = tvIdNumber,
+        @Path("season_number") seasonNumber: Int? = seasonNo,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+    ): SeasonInfoResponse
+    @GET("tv/{series_id}/recommendations")
+    suspend fun getRecommendations(
+        @Path("series_id") tvId: Int? = tvIdNumber,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+    ): RecommendationResponse
+
+    @GET("person/{person_id}/movie_credits")
+    suspend fun getActorMovies(
+        @Path("person_id") persId: Int? = personId,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+    ): ActorMovies
 
 }

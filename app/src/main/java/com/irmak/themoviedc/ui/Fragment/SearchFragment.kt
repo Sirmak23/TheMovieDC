@@ -1,5 +1,6 @@
 package com.irmak.themoviedc.ui.Fragment
 
+import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,10 @@ import android.widget.SearchView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.preference.AndroidResources
+import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.MainActivity
+import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.SearchAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.data.remote.api.searchWord
@@ -80,6 +84,17 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.searchRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+                }
+
+        })
+
         searchViewModel.getSearch()
         initRecyclerBind()
         searchObservable()

@@ -22,7 +22,7 @@ class TvPopularAdapter:RecyclerView.Adapter<TvPopularViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-      return  tvList!!.size
+        return tvList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: TvPopularViewHolder, position: Int) {

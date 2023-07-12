@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.ActorAdapter
@@ -94,6 +96,7 @@ class DetailFragment : Fragment() {
         PopularMovieViewModelFactory(popularMovieRepository)
     }
     var video: String = "null"
+    @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val main = activity as MainActivity
@@ -156,6 +159,7 @@ class DetailFragment : Fragment() {
             this.actorList = actorList?.cast
         }
     }
+
 
 
 }

@@ -8,14 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.adapter.TvPopularAdapter
 import com.irmak.themoviedc.adapter.TvTopRatedAdapter
-import com.irmak.themoviedc.data.remote.api.*
+import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.tvPopuplarPageNo
+import com.irmak.themoviedc.data.remote.api.tvTopRatedPageNo
 import com.irmak.themoviedc.databinding.FragmentTvPopularBinding
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse
 import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse
@@ -71,6 +72,7 @@ class TvPopularFragment : Fragment() {
     private val tvPopularViewModel: TvPopularViewModel by viewModels {
         TvPopularViewModelFactory(tvPopularRepository)
     }
+
     // topRated
     private val tvRatedAdapter: TvTopRatedAdapter by lazy {
         TvTopRatedAdapter()
@@ -81,8 +83,13 @@ class TvPopularFragment : Fragment() {
     private val tvRatedViewModel: TvRatedViewModel by viewModels {
         TvRatedViewModelFactory(tvRatedRepository)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        binding.upButtonTvPopular.visibility = View.GONE
+        binding.upButtonPop.visibility = View.GONE
         tvPopularViewModel.getPopularTv()
         tvRatedViewModel.getTvRated()
         initViewPager()
@@ -91,6 +98,9 @@ class TvPopularFragment : Fragment() {
         tvRatedObserve()
         setupTransformer()
         swipeToRefresh()
+        MoreTvRated()
+        tapToUp()
+        updateListItem()
     }
 
     private fun initViewPager() {
@@ -105,23 +115,25 @@ class TvPopularFragment : Fragment() {
             }
         }
     }
-    private fun initViewPagerRate(){
-        with(binding){
+
+    private fun initViewPagerRate() {
+        with(binding) {
             recyclerViewTvRate.apply {
                 tvRatedAdapter.setListRateTv(ArrayList(tvRateList))
                 adapter = tvRatedAdapter
-                layoutManager = GridLayoutManager(requireContext(), 2)
+                layoutManager = GridLayoutManager(requireContext(), 3)
 
             }
         }
     }
+
     private fun swipeToRefresh() {
         binding.swiperefreshTv.setOnRefreshListener {
-            tvPopuplarPageNo +=1
+            tvPopuplarPageNo += 1
             tvPopularViewModel.getPopularTv()
-            tvTopRatedPageNo +=1
-            tvRatedViewModel.getTvRated()
-            binding.viewPagerTv.setCurrentItem(0,true)
+//            tvTopRatedPageNo += 1
+//            tvRatedViewModel.getTvRated()
+            binding.viewPagerTv.setCurrentItem(0, true)
             binding.swiperefreshTv.isRefreshing = false
         }
     }
@@ -141,10 +153,53 @@ class TvPopularFragment : Fragment() {
             this.tvList = tvList.results
         }
     }
+
     private fun tvRatedObserve() {
         tvRatedViewModel.TvRatedList.observe(viewLifecycleOwner) { tvRateList ->
             this.tvRateList = tvRateList.results
         }
     }
+
+    private fun updateListItem() {
+        binding.upButtonTvPopular.setOnClickListener {
+            tvTopRatedPageNo += 1
+            tvRatedViewModel.getTvRated()
+        }
+    }
+
+    private fun MoreTvRated() {
+        with(binding) {
+            popularScroll.viewTreeObserver.addOnScrollChangedListener {
+                val view = popularScroll.getChildAt(popularScroll.childCount - 1)
+                val diff = (view.bottom - (popularScroll.height + popularScroll.scrollY))
+
+                if (diff <= 0) {
+                    upButtonTvPopular.visibility = View.VISIBLE
+                } else {
+                    upButtonTvPopular.visibility = View.GONE
+                }
+            }
+
+        }
+    }
+
+    private fun tapToUp() {
+        with(binding) {
+            popularScroll.viewTreeObserver.addOnScrollChangedListener {
+                val diff = popularScroll.scrollY
+
+                if (diff > 0) {
+                    upButtonPop.visibility = View.VISIBLE
+                } else {
+                    upButtonPop.visibility = View.GONE
+                }
+            }
+            upButtonPop.setOnClickListener {
+                popularScroll.smoothScrollTo(0,0)
+            }
+        }
+
+    }
+
 
 }
