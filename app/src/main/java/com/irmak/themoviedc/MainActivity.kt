@@ -2,6 +2,8 @@ package com.irmak.themoviedc
 
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -27,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 //        if (supportActionBar != null) {
 //            supportActionBar?.setTitle("Main Page")
 //        }
+
+
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_fragment) as NavHostFragment

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.MainActivity
@@ -23,8 +24,8 @@ import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse
 import com.irmak.themoviedc.repository.TvPopularRepository
 import com.irmak.themoviedc.repository.TvRatedRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.TvPopularViewModel
-import com.irmak.themoviedc.viewModel.TvRatedViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvPopularViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvRatedViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.TvPopularViewModelFactory
 import com.irmak.themoviedc.viewModel.viewModelFactory.TvRatedViewModelFactory
 import retrofit2.Retrofit
@@ -86,8 +87,6 @@ class TvPopularFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         binding.upButtonTvPopular.visibility = View.GONE
         binding.upButtonPop.visibility = View.GONE
         tvPopularViewModel.getPopularTv()
@@ -100,7 +99,7 @@ class TvPopularFragment : Fragment() {
         swipeToRefresh()
         MoreTvRated()
         tapToUp()
-        updateListItem()
+        MoreTvPopular()
     }
 
     private fun initViewPager() {
@@ -131,8 +130,6 @@ class TvPopularFragment : Fragment() {
         binding.swiperefreshTv.setOnRefreshListener {
             tvPopuplarPageNo += 1
             tvPopularViewModel.getPopularTv()
-//            tvTopRatedPageNo += 1
-//            tvRatedViewModel.getTvRated()
             binding.viewPagerTv.setCurrentItem(0, true)
             binding.swiperefreshTv.isRefreshing = false
         }
@@ -160,12 +157,6 @@ class TvPopularFragment : Fragment() {
         }
     }
 
-    private fun updateListItem() {
-        binding.upButtonTvPopular.setOnClickListener {
-            tvTopRatedPageNo += 1
-            tvRatedViewModel.getTvRated()
-        }
-    }
 
     private fun MoreTvRated() {
         with(binding) {
@@ -174,9 +165,10 @@ class TvPopularFragment : Fragment() {
                 val diff = (view.bottom - (popularScroll.height + popularScroll.scrollY))
 
                 if (diff <= 0) {
-                    upButtonTvPopular.visibility = View.VISIBLE
+                    tvTopRatedPageNo += 1
+                    tvRatedViewModel.getTvRated()
                 } else {
-                    upButtonTvPopular.visibility = View.GONE
+//                    upButtonTvPopular.visibility = View.GONE
                 }
             }
 
@@ -195,11 +187,37 @@ class TvPopularFragment : Fragment() {
                 }
             }
             upButtonPop.setOnClickListener {
-                popularScroll.smoothScrollTo(0,0)
+                popularScroll.smoothScrollTo(0, 0)
             }
         }
 
     }
+
+    private fun MoreTvPopular() {
+        with(binding) {
+            viewPagerTv.viewTreeObserver.addOnScrollChangedListener {
+                val view = viewPagerTv.getChildAt(viewPagerTv.childCount - 1)
+                val diff = (view.right - (viewPagerTv.width + viewPagerTv.scrollX))
+
+                if (diff <= 0) {
+                    val lastPageIndex = viewPagerTv.adapter?.itemCount?.minus(1) ?: 0
+                    val currentPageIndex = viewPagerTv.currentItem
+                    if (currentPageIndex == lastPageIndex) {
+                        tvPopuplarPageNo += 1
+                        tvPopularViewModel.getPopularTv()
+                    }
+                } else {
+                    // upButtonTvPopular.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
+
+
+
+
 
 
 }

@@ -1,25 +1,22 @@
 package com.irmak.themoviedc.ui.Fragment
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.UpcomingAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentUpcomingBinding
 import com.irmak.themoviedc.model.UpcomingModel.ResultUP
 import com.irmak.themoviedc.repository.UpcomingRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.UpcomingViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.UpcomingViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.UpcomingViewModelFactory
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
@@ -54,7 +51,7 @@ private lateinit var binding:FragmentUpcomingBinding
     private val upcomingRepository:UpcomingRepository by lazy {
         UpcomingRepository(movieApi)
     }
-    private val upcomingViewModel:UpcomingViewModel by viewModels{
+    private val upcomingViewModel: UpcomingViewModel by viewModels{
         UpcomingViewModelFactory(upcomingRepository)
     }
 

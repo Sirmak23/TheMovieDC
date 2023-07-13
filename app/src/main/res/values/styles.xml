@@ -37,4 +37,13 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+    <style name="CustomViewStyle">
+        <item name="custom_view_image">@drawable/empty_backgrounds</item>
+        <item name="custom_view_text">Hello, World!</item>
+        <item name="custom_view_textSize">@dimen/custom_view_text_size</item>
+        <item name="custom_view_textColor">@color/custom_view_text_color</item>
+    </style>
+
+    <color name="custom_view_text_color">#130908</color>
+    <dimen name="custom_view_text_size">20sp</dimen>
 </resources>

@@ -4,10 +4,7 @@ import android.os.Handler
 import androidx.core.view.doOnPreDraw
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.irmak.themoviedc.data.remote.api.pageNumber
 import com.irmak.themoviedc.databinding.FragmentConcatHorizontalBinding
-import com.irmak.themoviedc.repository.StoryRepository
-import com.irmak.themoviedc.viewModel.StoryViewModel
 import java.util.*
 
 class HorizontalWrapperViewHolder(

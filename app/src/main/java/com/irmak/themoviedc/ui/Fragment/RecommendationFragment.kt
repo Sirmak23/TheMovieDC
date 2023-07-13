@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.R
@@ -19,7 +17,7 @@ import com.irmak.themoviedc.databinding.FragmentRecommendationBinding
 import com.irmak.themoviedc.model.recommendationModel.RecomTvShow
 import com.irmak.themoviedc.repository.RecommendationRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.RecommendationViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.RecommendationViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.RecommendationViewModelFactory
 import retrofit2.Retrofit
 import kotlin.math.abs

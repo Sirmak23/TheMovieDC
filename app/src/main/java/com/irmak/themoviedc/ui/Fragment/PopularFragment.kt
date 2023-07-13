@@ -1,9 +1,13 @@
 package com.irmak.themoviedc.ui.Fragment
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -13,8 +17,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.adapter.*
-import com.irmak.themoviedc.data.remote.api.*
+import com.irmak.themoviedc.adapter.HorizontalWrapperAdapter
+import com.irmak.themoviedc.adapter.MovieAdapter
+import com.irmak.themoviedc.adapter.NowPlayingAdapter
+import com.irmak.themoviedc.adapter.NpHorizontalWrapperAdapter
+import com.irmak.themoviedc.adapter.StoryAdapter
+import com.irmak.themoviedc.adapter.TopRatedAdapter
+import com.irmak.themoviedc.adapter.VideoAdapter
+import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.movieIdNumber
+import com.irmak.themoviedc.data.remote.api.pageNumber
+import com.irmak.themoviedc.data.remote.api.pageNumberNpStory
+import com.irmak.themoviedc.data.remote.api.pageNumberTopRated
 import com.irmak.themoviedc.databinding.FragmentPopularBinding
 import com.irmak.themoviedc.holder.frm
 import com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel
@@ -23,18 +37,28 @@ import com.irmak.themoviedc.model.popularModel.MovieRespons
 import com.irmak.themoviedc.model.storyModel.ResultStoryNP
 import com.irmak.themoviedc.model.topRatedModel.topRatedResult
 import com.irmak.themoviedc.model.trailer.TrailerResponse
-import com.irmak.themoviedc.repository.*
+import com.irmak.themoviedc.repository.NowPlayingRepository
+import com.irmak.themoviedc.repository.PopularListRepository
+import com.irmak.themoviedc.repository.StoryRepository
+import com.irmak.themoviedc.repository.TopRatedRepository
+import com.irmak.themoviedc.repository.TrailerRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.*
-import com.irmak.themoviedc.viewModel.viewModelFactory.*
+import com.irmak.themoviedc.viewModel.ViewModelSub.MovieViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.NowPlayingViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.StoryViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TopRatedViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TrailerViewModel
+import com.irmak.themoviedc.viewModel.viewModelFactory.MovieViewModelFactory
+import com.irmak.themoviedc.viewModel.viewModelFactory.NowPlayingViewModelFactory
+import com.irmak.themoviedc.viewModel.viewModelFactory.StoryViewModelFactory
+import com.irmak.themoviedc.viewModel.viewModelFactory.TopRatedViewModelFactory
+import com.irmak.themoviedc.viewModel.viewModelFactory.TrailerViewModelFactory
 import retrofit2.Retrofit
 import kotlin.math.abs
 import kotlin.properties.Delegates
 
-lateinit var recPop: RecyclerView
 var isAutoScrollEnabledS = false
-val videoIds = ArrayList<Int?>()
-var mvID :Int? = 1
+
 class PopularFragment : Fragment() {
     private lateinit var binding: FragmentPopularBinding
     private val autoScrollHandler = Handler()
@@ -43,6 +67,8 @@ class PopularFragment : Fragment() {
     private lateinit var autoScrollRunnableS: Runnable
     private var isAutoScrollEnabled = false
 
+    var videoIds = ArrayList<Int?>()
+    var videoIdsCheck = ArrayList<Int?>()
     var movieList: List<MovieRespons>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             movieAdapter.setList(ArrayList(newValue))
@@ -163,7 +189,6 @@ class PopularFragment : Fragment() {
         storyViewModel.getPlayVidoeMovie()
         topRatedViewModel.getTopRatedMovie()
         nowPlayingViewModel.nowPlaylist.observe(viewLifecycleOwner, ::getVideoIDs)
-        trailerViewModel.getVideo()
         trailerViewModel.trailerList.observe(viewLifecycleOwner, ::trailerObserve)
         initVide0NpBinding()
         initNpGRidBinding()
@@ -176,36 +201,43 @@ class PopularFragment : Fragment() {
         backInvisible()
         initViewPager()
         setupTransformer()
-        binding.recyclerWebview.setOnClickListener {
-            trailerViewModel.getVideo()
 
-        }
 
     }
-    val videoUr = arrayListOf<String>()
-    val videos = listOf("4SIITjPijKg","N0S-PGgbu90","tOAuJHu5Tg0")
+
+    var videoUr = ArrayList<String>()
+    val videos = listOf("4SIITjPijKg", "N0S-PGgbu90", "tOAuJHu5Tg0")
 
 
     private fun getVideoIDs(result: NowPlayingModel) {
-        for (x in 0..4) {
+        videoIds.clear()
+        for (x in 0..5) {
             val vID = result.results?.get(x)?.id
             videoIds.add(vID)
-            Log.e("Delegates", "videoIds -> ${videoIds}")
+            Log.e("Delegates", "videoIds -> $videoIds")
         }
-            getVideoKey()
+        getVideoKey()
     }
-    private fun getVideoKey(){
-        for (abc in videoIds) {
-           movieIdNumber = abc
+
+    private fun getVideoKey() {
+        videoUr.clear()
+        for (x in videoIds) {
+            movieIdNumber = x
             trailerViewModel.getVideo()
-            Log.e("Delegates", "abc -> ${abc}")
+            Log.e("Delegates", "abc -> ${x}")
             Log.e("movieIdNumber", "movieIdNumber -> ${movieIdNumber}")
         }
+//        videoUr.clear()
     }
+
     fun trailerObserve(resp: TrailerResponse?) {
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             video = resp.results[0].key.toString()
-            videoUr.add(video)
+            if (videoUr.contains(video)){
+                return
+            }else{
+                videoUr.add(video)
+            }
             Log.e("Delegates", "video -> ${video}")
             Log.e("videoUr", "videoUr -> ${videoUr}")
         }
@@ -217,9 +249,10 @@ class PopularFragment : Fragment() {
             recyclerWebview.apply {
                 val videoAdapter = VideoAdapter(videoUr)
                 adapter = videoAdapter
+                }
             }
         }
-    }
+
 
     private fun swipeToRefresh() {
         binding.swiperefresh.setOnRefreshListener {
@@ -270,7 +303,7 @@ class PopularFragment : Fragment() {
 
 
             if (isAutoScrollEnabledS) {
-                autoScrollHandlerS.postDelayed(autoScrollRunnableS, 180000) // 180 saniye
+                autoScrollHandlerS.postDelayed(autoScrollRunnableS, 150000) // 180 saniye
             }
         }
     }
@@ -300,7 +333,7 @@ class PopularFragment : Fragment() {
 
     private fun startAutoVideo() {
         isAutoScrollEnabledS = true
-        autoScrollHandlerS.postDelayed(autoScrollRunnableS, 180000) // 180 saniye
+        autoScrollHandlerS.postDelayed(autoScrollRunnableS, 150000) // 180 saniye
     }
 
     private fun stopAutoScroll() {
@@ -401,6 +434,7 @@ class PopularFragment : Fragment() {
     }
 
 }
+
 // concat kullanmak için
 //    private fun initConcatBinding() {
 //        with(binding) {

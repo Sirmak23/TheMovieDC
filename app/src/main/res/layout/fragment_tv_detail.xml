@@ -167,7 +167,39 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:text=" Hemen İzle "
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/infoTextProvide"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:text=" İçerik online platformlarda bulunamadı !  "
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/providerRecycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/providers_layout"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

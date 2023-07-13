@@ -15,7 +15,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,6 +29,10 @@ import com.irmak.themoviedc.repository.*
 import com.irmak.themoviedc.retrofit.RetrofitClient
 import com.irmak.themoviedc.ui.extensions.loadImage
 import com.irmak.themoviedc.viewModel.*
+import com.irmak.themoviedc.viewModel.ViewModelSub.PopularMovieViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TrailerViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvDetailViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvTrailerViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
 

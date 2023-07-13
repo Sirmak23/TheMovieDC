@@ -2,10 +2,8 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.irmak.themoviedc.repository.PopularListRepository
 import com.irmak.themoviedc.repository.TopRatedRepository
-import com.irmak.themoviedc.viewModel.MovieViewModel
-import com.irmak.themoviedc.viewModel.TopRatedViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TopRatedViewModel
 
 
 @Suppress("UNCHECKED_CAST")

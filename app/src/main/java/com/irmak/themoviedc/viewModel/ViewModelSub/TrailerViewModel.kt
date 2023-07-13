@@ -1,4 +1,4 @@
-package com.irmak.themoviedc.viewModel
+package com.irmak.themoviedc.viewModel.ViewModelSub
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

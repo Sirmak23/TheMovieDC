@@ -3,7 +3,7 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.irmak.themoviedc.repository.NowPlayingRepository
-import com.irmak.themoviedc.viewModel.NowPlayingViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.NowPlayingViewModel
 
 @Suppress("UNCHECKED_CAST")
 class NowPlayingViewModelFactory(private val repository: NowPlayingRepository):ViewModelProvider.Factory {

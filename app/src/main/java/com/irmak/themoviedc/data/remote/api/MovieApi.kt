@@ -13,10 +13,13 @@ import com.irmak.themoviedc.model.storyModel.StoryModel
 import com.irmak.themoviedc.model.topRatedModel.TopRatedRespone
 import com.irmak.themoviedc.model.trailer.TrailerResponse
 import com.irmak.themoviedc.model.trailer.TvTrailerResponse
+import com.irmak.themoviedc.model.trendAll.TrendModel
 import com.irmak.themoviedc.model.tvActorModel.TvActorModel
 import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularModel
 import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedModel
+import com.irmak.themoviedc.model.watchProviders.MovieProviderDetails
+import com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -27,7 +30,8 @@ var personId: Int? = 1
 var movieIdNumber: Int? = 420888
 var tvIdNumber: Int? = 71912
 var searchWord: String? = ""
-var tvPopuplarPageNo: Int = 2
+var timePeriod: String? = "day"
+var tvPopuplarPageNo: Int = 1
 var tvTopRatedPageNo: Int = 1
 var pageNumberNpStory: Int = 1
 var pageNumberTopRated: Int = 1
@@ -53,7 +57,7 @@ interface MovieApi {
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr"
     ): ActorList
-// bunun mvvm repo model falan hepsini yaz tv için ayrı lazım
+
     @GET("tv/{series_id}/credits")
     suspend fun getTvActorDetail(
         @Path("series_id") tvId: Int? = tvIdNumber,
@@ -139,6 +143,7 @@ interface MovieApi {
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
     ): SeasonInfoResponse
+
     @GET("tv/{series_id}/recommendations")
     suspend fun getRecommendations(
         @Path("series_id") tvId: Int? = tvIdNumber,
@@ -152,5 +157,27 @@ interface MovieApi {
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
     ): ActorMovies
+
+    @GET("trending/all/{time_window}")
+    suspend fun getTrendAll(
+        @Path("time_window") timePd: String? = timePeriod,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+    ): TrendModel
+
+    @GET("movie/{movie_id}/watch/providers")
+    suspend fun getProviders(
+        @Path("movie_id") moviId: Int? = movieIdNumber,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+    ): MovieProviderDetails
+
+    @GET("tv/{series_id}/watch/providers")
+    suspend fun getTvProviders(
+        @Path("series_id") serId: Int? = tvIdNumber,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+    ): TvMovieProviderDetails
+
 
 }

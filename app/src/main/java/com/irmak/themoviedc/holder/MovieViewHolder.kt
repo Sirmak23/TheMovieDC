@@ -1,18 +1,14 @@
 package com.irmak.themoviedc.holder
 
 import android.annotation.SuppressLint
-import android.os.Handler
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.data.remote.api.movieIdNumber
 import com.irmak.themoviedc.databinding.FragmentGridLayoutBinding
 import com.irmak.themoviedc.model.popularModel.MovieRespons
 import com.irmak.themoviedc.ui.Fragment.PopularFragmentDirections
-import com.irmak.themoviedc.ui.Fragment.recPop
 import com.irmak.themoviedc.ui.extensions.loadImage
 import java.util.*
 

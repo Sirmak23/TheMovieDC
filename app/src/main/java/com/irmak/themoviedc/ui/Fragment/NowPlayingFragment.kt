@@ -10,9 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.NowPlayingAdapter
 import com.irmak.themoviedc.adapter.NpHorizontalWrapperAdapter
 import com.irmak.themoviedc.adapter.StoryAdapter
@@ -24,8 +22,8 @@ import com.irmak.themoviedc.model.storyModel.ResultStoryNP
 import com.irmak.themoviedc.repository.NowPlayingRepository
 import com.irmak.themoviedc.repository.StoryRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.NowPlayingViewModel
-import com.irmak.themoviedc.viewModel.StoryViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.NowPlayingViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.StoryViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.NowPlayingViewModelFactory
 import com.irmak.themoviedc.viewModel.viewModelFactory.StoryViewModelFactory
 import retrofit2.Retrofit

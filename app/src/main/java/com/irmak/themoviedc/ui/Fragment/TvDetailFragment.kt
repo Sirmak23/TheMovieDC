@@ -4,19 +4,24 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.google.common.base.Strings.isNullOrEmpty
 import com.irmak.themoviedc.MainActivity
+import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.SeasonInfoAdapter
 import com.irmak.themoviedc.adapter.TvACtorAdapter
 import com.irmak.themoviedc.adapter.TvDetailAdapter
+import com.irmak.themoviedc.adapter.TvWatchProviderAdapter
+import com.irmak.themoviedc.adapter.WatchProviderAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.data.remote.api.seasonNo
 import com.irmak.themoviedc.databinding.FragmentTvDetailBinding
@@ -24,10 +29,20 @@ import com.irmak.themoviedc.model.seasonInfoModel.EpisodeData
 import com.irmak.themoviedc.model.trailer.TvTrailerResponse
 import com.irmak.themoviedc.model.tvActorModel.CastResponse
 import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
+import com.irmak.themoviedc.model.watchProviders.Provider
+import com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails
+import com.irmak.themoviedc.model.watchProviders.TvProvider
 import com.irmak.themoviedc.repository.*
 import com.irmak.themoviedc.retrofit.RetrofitClient
 import com.irmak.themoviedc.ui.extensions.loadImage
 import com.irmak.themoviedc.viewModel.*
+import com.irmak.themoviedc.viewModel.ViewModelSub.SeasonInfoViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TrailerViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvActorViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvDetailViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvTrailerViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvWatchProvideViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.WatchProvideViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
@@ -54,6 +69,12 @@ class TvDetailFragment : Fragment() {
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
+    var tvProviderList: List<TvProvider>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+        if (newValue.isNullOrEmpty().not()) {
+            tvWatchProviderAdapter.setTvProvidersList(ArrayList(newValue))
+        }
+        Log.e("Delegates", "tvProviderList -> ${newValue}")
+    }
 
 
     override fun onCreateView(
@@ -77,6 +98,7 @@ class TvDetailFragment : Fragment() {
         }
         return binding.root
     }
+
     private val tvTrailerRepository: TvTrailerRepository by lazy {
         TvTrailerRepository(movieApi)
     }
@@ -125,6 +147,15 @@ class TvDetailFragment : Fragment() {
     private val seasonInfoViewModel: SeasonInfoViewModel by viewModels {
         SeasonInfoViewModelFactory(seasonInfoRepository)
     }
+    private val tvWatchProviderRepository: TvWatchProviderRepository by lazy {
+        TvWatchProviderRepository(movieApi)
+    }
+    private val tvWatchProvideViewModel: TvWatchProvideViewModel by viewModels {
+        TvWatchProvideViewModelFactory(tvWatchProviderRepository)
+    }
+    private val tvWatchProviderAdapter: TvWatchProviderAdapter by lazy {
+        TvWatchProviderAdapter()
+    }
 
     var tvVideo: String = "null"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -135,11 +166,15 @@ class TvDetailFragment : Fragment() {
         tvTrailerViewModel.getTvVideo()
         TvActorViewModel.getTvActorDetail()
         seasonInfoViewModel.getSeasonDetail()
+        tvWatchProvideViewModel.getTvProviders()
         actorInitBinding()
         seasonInfoInıtBinding()
         ActorObserver()
         SeasonInfoObserver()
+        providerInitBinding()
+        providerObserver()
         tvTrailerViewModel.tvTrailerList.observe(viewLifecycleOwner, ::tvTrailerObserve)
+        tvWatchProvideViewModel.tvProviderList.observe(viewLifecycleOwner, ::tvProvideText)
         binding.TvBackButtonImageView.setOnClickListener {
             findNavController().navigate(TvDetailFragmentDirections.actionTvDetailFragmentToTvPopularFragment())
         }
@@ -154,6 +189,31 @@ class TvDetailFragment : Fragment() {
             }
         }
 
+    }
+
+   private fun tvProvideText(response:TvMovieProviderDetails){
+       if (response.results.TR?.flatrate?.get(0)?.logo_path.isNullOrEmpty()){
+           binding.infoTextProvide.visibility = TextView.VISIBLE
+       }else{
+           binding.infoTextProvide.visibility = TextView.GONE
+       }
+   }
+
+
+    private fun providerInitBinding() {
+        with(binding) {
+            providerRecycler.apply {
+                tvWatchProviderAdapter.setTvProvidersList(ArrayList(tvProviderList))
+                adapter = tvWatchProviderAdapter
+//                providerRecycler.canScrollVertically(0)
+            }
+        }
+    }
+
+    private fun providerObserver() {
+        tvWatchProvideViewModel.tvProviderList.observe(viewLifecycleOwner) { tvProviderList ->
+            this.tvProviderList = tvProviderList?.results?.TR?.flatrate
+        }
     }
 
     fun tvTrailerObserve(resp: TvTrailerResponse?) {

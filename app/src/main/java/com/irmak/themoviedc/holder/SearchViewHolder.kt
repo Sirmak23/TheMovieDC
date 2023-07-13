@@ -23,26 +23,8 @@ class SearchViewHolder(val binding: SearchLayoutGridBinding) :
         }else if (result.media_type == "tv"){
             binding.txtTitleS.text = result.name
         }
-        binding.posterViewS.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${result.poster_path}")
-        binding.txtDateS.text = result.release_date
-        binding.imdbPhotoS.loadImage("https://m.media-amazon.com/images/G/01/imdb/images/social/imdb_logo._CB410901634_.png")
-        binding.txtOverViewS.text = "${result.vote_average}/10"
-        if (result?.overview.isNullOrEmpty().not()) {
-            binding.txtOverViewS.text = result.overview
-        } else
-            binding.txtOverViewS.text = "Üzgünüz özet bilgisi bulunamadı"
-
-        binding.txtOverViewS.setOnClickListener {
-            val alertDialogBuilder =
-                AlertDialog.Builder(itemView.context, R.style.TransparentDialogStyle)
-            val alertDialog = alertDialogBuilder.create()
-//            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            alertDialogBuilder.setMessage("${result.overview}")
-            alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-            alertDialogBuilder.setPositiveButton("KAPAT") { dialog, which -> dialog.dismiss() }
-            alertDialogBuilder.show()
-        }
-
+//        binding.posterViewS.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${result.poster_path}")
+        binding.posterViewS.loadImage("https://www.themoviedb.org/t/p/w533_and_h300_bestv2${result.backdrop_path}")
         binding.cardViewS.setOnClickListener {
             if (result.media_type == "movie"){
                 movieIdNumber = result?.id
@@ -57,3 +39,22 @@ class SearchViewHolder(val binding: SearchLayoutGridBinding) :
         }
     }
 }
+
+//binding.txtDateS.text = result.release_date
+//        binding.imdbPhotoS.loadImage("https://m.media-amazon.com/images/G/01/imdb/images/social/imdb_logo._CB410901634_.png")
+//        binding.txtOverViewS.text = "${result.vote_average}/10"
+//        if (result?.overview.isNullOrEmpty().not()) {
+//            binding.txtOverViewS.text = result.overview
+//        } else
+//            binding.txtOverViewS.text = "Üzgünüz özet bilgisi bulunamadı"
+//
+//        binding.txtOverViewS.setOnClickListener {
+//            val alertDialogBuilder =
+//                AlertDialog.Builder(itemView.context, R.style.TransparentDialogStyle)
+//            val alertDialog = alertDialogBuilder.create()
+////            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//            alertDialogBuilder.setMessage("${result.overview}")
+//            alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+//            alertDialogBuilder.setPositiveButton("KAPAT") { dialog, which -> dialog.dismiss() }
+//            alertDialogBuilder.show()
+//        }

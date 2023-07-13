@@ -3,7 +3,7 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.irmak.themoviedc.repository.PopularListRepository
-import com.irmak.themoviedc.viewModel.MovieViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.MovieViewModel
 
 @Suppress("UNCHECKED_CAST")
 class MovieViewModelFactory(private val repository: PopularListRepository):ViewModelProvider.Factory{

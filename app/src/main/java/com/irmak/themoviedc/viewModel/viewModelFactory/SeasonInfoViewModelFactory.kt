@@ -2,10 +2,8 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.irmak.themoviedc.repository.SearchRepository
 import com.irmak.themoviedc.repository.SeasonInfoRepository
-import com.irmak.themoviedc.viewModel.SearchViewModel
-import com.irmak.themoviedc.viewModel.SeasonInfoViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.SeasonInfoViewModel
 
 @Suppress("UNCHECKED_CAST")
 class SeasonInfoViewModelFactory(private val repository: SeasonInfoRepository): ViewModelProvider.Factory {

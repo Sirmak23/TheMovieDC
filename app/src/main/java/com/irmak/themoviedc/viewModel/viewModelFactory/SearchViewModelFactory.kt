@@ -3,7 +3,7 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.irmak.themoviedc.repository.SearchRepository
-import com.irmak.themoviedc.viewModel.SearchViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.SearchViewModel
 
 @Suppress("UNCHECKED_CAST")
 class SearchViewModelFactory(private val repository: SearchRepository): ViewModelProvider.Factory {

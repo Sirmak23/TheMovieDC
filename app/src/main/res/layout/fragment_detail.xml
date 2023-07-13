@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#171B32"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#171B32">
 
     <ImageView
         android:id="@+id/popularDetailBack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
-<!--    android:layout_height="240dp"-->
+    <!--    android:layout_height="240dp"-->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -148,6 +148,26 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:text=" Hemen İzle "
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/providerRecycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/providers_layout"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

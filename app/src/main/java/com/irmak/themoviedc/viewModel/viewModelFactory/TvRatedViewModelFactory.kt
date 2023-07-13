@@ -2,10 +2,8 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.irmak.themoviedc.repository.PopularListRepository
 import com.irmak.themoviedc.repository.TvRatedRepository
-import com.irmak.themoviedc.viewModel.MovieViewModel
-import com.irmak.themoviedc.viewModel.TvRatedViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TvRatedViewModel
 
 class TvRatedViewModelFactory(private val repository: TvRatedRepository): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

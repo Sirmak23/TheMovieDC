@@ -3,7 +3,7 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.irmak.themoviedc.repository.StoryRepository
-import com.irmak.themoviedc.viewModel.StoryViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.StoryViewModel
 
 
 @Suppress("UNCHECKED_CAST")

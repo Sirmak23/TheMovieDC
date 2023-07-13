@@ -1,7 +1,6 @@
 package com.irmak.themoviedc.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.databinding.TvRatedGridBinding
@@ -13,11 +12,15 @@ class TvTopRatedAdapter : RecyclerView.Adapter<TvRatedViewHolder>() {
 
     fun setListRateTv(tvTopRated: ArrayList<TvTopRatedResponse>) {
 //        this.tvTopRated = tvTopRated
+
         if (this.tvTopRated == null) {
             this.tvTopRated = tvTopRated
-        } else {
+        } else if (this.tvTopRated == tvTopRated) {
+        }else {
             this.tvTopRated?.addAll(tvTopRated)
         }
+
+//        this.tvTopRated = ArrayList(tvTopRated.filter { it.origin_country?.contains("JP") != true })
         notifyDataSetChanged()
     }
 

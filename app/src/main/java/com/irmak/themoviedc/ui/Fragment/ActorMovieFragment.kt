@@ -9,15 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.ActorMoviesAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentActorMovieBinding
 import com.irmak.themoviedc.model.actorModel.HisMovie
-import com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse
 import com.irmak.themoviedc.repository.ActorMovieRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
-import com.irmak.themoviedc.viewModel.ActorMovieViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.ActorMovieViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.ActorMovieViewModelFactory
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
@@ -49,7 +47,7 @@ class ActorMovieFragment : Fragment() {
     private val actorMovieRepository:ActorMovieRepository by lazy {
         ActorMovieRepository(movieApi)
     }
-    private val actorMovieViewModel:ActorMovieViewModel by viewModels {
+    private val actorMovieViewModel: ActorMovieViewModel by viewModels {
         ActorMovieViewModelFactory(actorMovieRepository)
     }
 

@@ -2,10 +2,8 @@ package com.irmak.themoviedc.viewModel.viewModelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.irmak.themoviedc.repository.PopularMovieRepository
 import com.irmak.themoviedc.repository.RecommendationRepository
-import com.irmak.themoviedc.viewModel.PopularMovieViewModel
-import com.irmak.themoviedc.viewModel.RecommendationViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.RecommendationViewModel
 
 @Suppress("UNCHECKED_CAST")
 class RecommendationViewModelFactory(private val repository: RecommendationRepository):

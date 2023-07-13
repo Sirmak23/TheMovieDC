@@ -10,31 +10,32 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.ActorAdapter
 import com.irmak.themoviedc.adapter.PopularMovieDetailAdapter
+import com.irmak.themoviedc.adapter.WatchProviderAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentDetailBinding
-import com.irmak.themoviedc.holder.frm
 import com.irmak.themoviedc.model.actorModel.ActorDetail
 import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
 import com.irmak.themoviedc.model.trailer.TrailerResponse
+import com.irmak.themoviedc.model.watchProviders.Provider
 import com.irmak.themoviedc.repository.ActorRepository
 import com.irmak.themoviedc.repository.PopularMovieRepository
 import com.irmak.themoviedc.repository.TrailerRepository
+import com.irmak.themoviedc.repository.WatchProviderRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
 import com.irmak.themoviedc.ui.extensions.loadImage
-import com.irmak.themoviedc.viewModel.ActorViewModel
-import com.irmak.themoviedc.viewModel.PopularMovieViewModel
-import com.irmak.themoviedc.viewModel.TrailerViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.ActorViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.PopularMovieViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.TrailerViewModel
+import com.irmak.themoviedc.viewModel.ViewModelSub.WatchProvideViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.ActorViewModelFactory
 import com.irmak.themoviedc.viewModel.viewModelFactory.PopularMovieViewModelFactory
 import com.irmak.themoviedc.viewModel.viewModelFactory.TrailerViewModelFactory
+import com.irmak.themoviedc.viewModel.viewModelFactory.WatchProvideViewModelFactory
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
 
@@ -45,6 +46,12 @@ class DetailFragment : Fragment() {
             actorAdapter.setActorList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
+    }
+    var providerList: List<Provider>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+        if (newValue.isNullOrEmpty().not()) {
+            watchProviderAdapter.setProvidersList(ArrayList(newValue))
+        }
+        Log.e("Delegates", "providerList -> ${newValue}")
     }
 
     private lateinit var binding: FragmentDetailBinding
@@ -95,6 +102,15 @@ class DetailFragment : Fragment() {
     private val popularMovieViewModel: PopularMovieViewModel by viewModels {
         PopularMovieViewModelFactory(popularMovieRepository)
     }
+    private val watchProviderRepository:WatchProviderRepository by lazy {
+        WatchProviderRepository(movieApi)
+    }
+    private val watchProvideViewModel:WatchProvideViewModel by viewModels {
+        WatchProvideViewModelFactory(watchProviderRepository)
+    }
+    private val watchProviderAdapter:WatchProviderAdapter by lazy {
+        WatchProviderAdapter()
+    }
     var video: String = "null"
     @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,9 +118,12 @@ class DetailFragment : Fragment() {
         val main = activity as MainActivity
         main.setBottomNavigationViewVisibility(false)
         actorViewModel.getActorDetail()
+        providerInitBinding()
         actorInitBinding()
+        providerObserver()
         ActorObserver()
         trailerViewModel.getVideo()
+        watchProvideViewModel.getProviders()
         binding.backButtonImageView.setOnClickListener {
             findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToPopularFragment())
         }
@@ -153,10 +172,24 @@ class DetailFragment : Fragment() {
             }
         }
     }
+    private fun providerInitBinding() {
+        with(binding) {
+            providerRecycler.apply {
+                watchProviderAdapter.setProvidersList(ArrayList(providerList))
+                adapter = watchProviderAdapter
+//                providerRecycler.canScrollVertically(0)
+            }
+        }
+    }
 
     private fun ActorObserver() {
         actorViewModel.actorList.observe(viewLifecycleOwner) { actorList ->
             this.actorList = actorList?.cast
+        }
+    }
+    private fun providerObserver() {
+        watchProvideViewModel.providerList.observe(viewLifecycleOwner) { providerList ->
+            this.providerList = providerList?.results?.TR?.flatrate
         }
     }
 
