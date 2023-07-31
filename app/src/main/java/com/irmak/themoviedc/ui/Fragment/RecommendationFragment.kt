@@ -25,7 +25,7 @@ import kotlin.properties.Delegates
 
 class RecommendationFragment : DialogFragment() {
 
-    var recomList: List<RecomTvShow>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var recomList: List<com.irmak.themoviedc.model.recommendationModel.RecomTvShow>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             recommendationAdapter.setRecommeList(ArrayList(newValue))
         }

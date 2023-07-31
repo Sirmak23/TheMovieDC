@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.R
+import com.irmak.themoviedc.data.remote.api.MovieOrTvID
 import com.irmak.themoviedc.data.remote.api.movieIdNumber
 import com.irmak.themoviedc.databinding.FragmentNowPlayingGridLayoutBinding
 import com.irmak.themoviedc.model.nowPlayingModel.ResultNP
@@ -19,7 +20,7 @@ class NowPlayingViewHolder(val binding: FragmentNowPlayingGridLayoutBinding) :
 
 
     @SuppressLint("SetTextI18n")
-    fun NpBind(response: ResultNP) {
+    fun NpBind(response: com.irmak.themoviedc.model.nowPlayingModel.ResultNP) {
         binding.txtDateNP.text = response.release_date
         binding.posterViewNP.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
         binding.imdbPhotoNP.loadImage("https://m.media-amazon.com/images/G/01/imdb/images/social/imdb_logo._CB410901634_.png")
@@ -41,6 +42,7 @@ class NowPlayingViewHolder(val binding: FragmentNowPlayingGridLayoutBinding) :
         }
         binding.cardViewNP.setOnClickListener {
             movieIdNumber = response.id
+            MovieOrTvID = response.id!!
             fragmentChoice(frm)
         }
     }

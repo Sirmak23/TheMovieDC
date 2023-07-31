@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 
 class PopularMovieViewModel(private val popularMovieRepository: PopularMovieRepository):ViewModel() {
 
-    private var mutablePopularMovieDetailList:MutableLiveData<PopularMovieDetailResponse?> = MutableLiveData()
-    val popularMovieDetailList:LiveData<PopularMovieDetailResponse?>
+    private var mutablePopularMovieDetailList:MutableLiveData<com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse?> = MutableLiveData()
+    val popularMovieDetailList:LiveData<com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse?>
     get() = mutablePopularMovieDetailList
 
     fun getPopularMovieDetail(){

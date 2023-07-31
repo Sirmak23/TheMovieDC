@@ -211,17 +211,17 @@ class videoPlayerFragment : Fragment() {
 //            })
 
 
-    private fun movieDetailObserver(response: PopularMovieDetailResponse?) {
+    private fun movieDetailObserver(response: com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse?) {
         binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1280_and_h720_bestv2${response?.backdrop_path}")
 
     }
 
-    private fun tvDetailObserver(response: TvDetailModel) {
+    private fun tvDetailObserver(response: com.irmak.themoviedc.model.tvDetailModel.TvDetailModel) {
         binding.videoBackgorunds.loadImage("https://image.tmdb.org/t/p/w1280_and_h720_bestv2${response.backdrop_path}")
 
     }
 
-    fun trailerObserve(resp: TrailerResponse?) {
+    fun trailerObserve(resp: com.irmak.themoviedc.model.trailer.TrailerResponse?) {
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             video = resp.results[0].key?.toString() ?: ""
 //            if (videoUrls.contains(video)){
@@ -235,7 +235,7 @@ class videoPlayerFragment : Fragment() {
         }
     }
 
-    fun tvTrailerObserve(resp: TvTrailerResponse?) {
+    fun tvTrailerObserve(resp: com.irmak.themoviedc.model.trailer.TvTrailerResponse?) {
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             tvVideo = resp.results[0].key.toString()
             if (ChoiceVideo == "tv") {

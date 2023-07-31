@@ -1,5 +1,7 @@
 package com.irmak.themoviedc.ui.Fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.irmak.themoviedc.MainActivity
@@ -20,10 +21,12 @@ import com.irmak.themoviedc.data.remote.api.tvPopuplarPageNo
 import com.irmak.themoviedc.data.remote.api.tvTopRatedPageNo
 import com.irmak.themoviedc.databinding.FragmentTvPopularBinding
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse
+import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedModel
 import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse
 import com.irmak.themoviedc.repository.TvPopularRepository
 import com.irmak.themoviedc.repository.TvRatedRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
+import com.irmak.themoviedc.ui.extensions.isBackOrNext
 import com.irmak.themoviedc.viewModel.ViewModelSub.TvPopularViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.TvRatedViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.TvPopularViewModelFactory
@@ -34,14 +37,17 @@ import kotlin.properties.Delegates
 
 class TvPopularFragment : Fragment() {
     lateinit var binding: FragmentTvPopularBinding
-
-    var tvList: List<TvPopularResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var tvList: List<TvPopularResponse>? by Delegates.observable(
+        arrayListOf()
+    ) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             tvPopularAdapter.setListTv(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var tvRateList: List<TvTopRatedResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var tvRateList: List<TvTopRatedResponse>? by Delegates.observable(
+        arrayListOf()
+    ) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             tvRatedAdapter.setListRateTv(ArrayList(newValue))
         }
@@ -55,8 +61,61 @@ class TvPopularFragment : Fragment() {
         binding = FragmentTvPopularBinding.inflate(inflater, container, false)
         val main = activity as MainActivity
         main.setBottomNavigationViewVisibility(true)
+        Log.e("info", "oncreateview")
         return binding.root
     }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.e("info", "onAttach")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.e("info", "onCreate")
+        isBackOrNext = 0
+        tvPopularViewModel.getPopularTv()
+        tvRatedViewModel.getTvRated()
+
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("info", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("info", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("info", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("info", "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.e("info", "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("info", "onDestroy")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.e("info", "onDetach")
+    }
+
 
     private val tvPopularAdapter: TvPopularAdapter by lazy {
         TvPopularAdapter()
@@ -85,27 +144,61 @@ class TvPopularFragment : Fragment() {
         TvRatedViewModelFactory(tvRatedRepository)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.upButtonTvPopular.visibility = View.GONE
         binding.upButtonPop.visibility = View.GONE
-        tvPopularViewModel.getPopularTv()
-        tvRatedViewModel.getTvRated()
+        tvRatedViewModel.tvRatedList.observe(viewLifecycleOwner, ::setPageNo)
         initViewPager()
-        initViewPagerRate()
+        initRate()
         tvPopularObserve()
         tvRatedObserve()
         setupTransformer()
-        swipeToRefresh()
-        MoreTvRated()
+        // swipeToRefresh()
+//        MoreTvRated()
         tapToUp()
         MoreTvPopular()
+        Log.e("info", "onViewCreated")
+
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun setPageNo(response: TvTopRatedModel) {
+        val nowPage = response.page
+        val totalPages = response.total_pages
+        binding.pageEditText.text = "$nowPage/$totalPages"
+
+        binding.backPageButton.setOnClickListener {
+            if (nowPage != null) {
+                if (nowPage > 3) {
+                        isBackOrNext = 2
+                        tvRatedViewModel.getTvRated()
+                    binding.recyclerViewTvRate.smoothScrollToPosition(0)
+                    }
+
+                }
+            }
+
+                binding.nextPageButton.setOnClickListener {
+                        isBackOrNext = 1
+                        tvRatedViewModel.getTvRated()
+                    binding.recyclerViewTvRate.smoothScrollToPosition(0)
+                }
+            }
+
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.e("info", "onActivityCreated")
+
+    }
+
 
     private fun initViewPager() {
         with(binding) {
             viewPagerTv.apply {
-                tvPopularAdapter.setListTv(ArrayList(tvList))
+//                tvPopularAdapter.setListTv(ArrayList(tvList))
                 adapter = tvPopularAdapter
                 offscreenPageLimit = 3
                 clipToPadding = false
@@ -115,25 +208,26 @@ class TvPopularFragment : Fragment() {
         }
     }
 
-    private fun initViewPagerRate() {
+
+    private fun initRate() {
         with(binding) {
             recyclerViewTvRate.apply {
-                tvRatedAdapter.setListRateTv(ArrayList(tvRateList))
+//                tvRatedAdapter.setListRateTv(ArrayList(tvRateList))
                 adapter = tvRatedAdapter
                 layoutManager = GridLayoutManager(requireContext(), 3)
-
             }
         }
     }
 
-    private fun swipeToRefresh() {
-        binding.swiperefreshTv.setOnRefreshListener {
-            tvPopuplarPageNo += 1
-            tvPopularViewModel.getPopularTv()
-            binding.viewPagerTv.setCurrentItem(0, true)
-            binding.swiperefreshTv.isRefreshing = false
-        }
-    }
+
+//    private fun swipeToRefresh() {
+//        binding.swiperefreshTv.setOnRefreshListener {
+//            tvPopuplarPageNo += 1
+//            tvPopularViewModel.getPopularTv()
+//            binding.viewPagerTv.setCurrentItem(0, true)
+//            binding.swiperefreshTv.isRefreshing = false
+//        }
+//    }
 
     private fun setupTransformer() {
         val transformer = CompositePageTransformer()
@@ -152,7 +246,7 @@ class TvPopularFragment : Fragment() {
     }
 
     private fun tvRatedObserve() {
-        tvRatedViewModel.TvRatedList.observe(viewLifecycleOwner) { tvRateList ->
+        tvRatedViewModel.tvRatedList.observe(viewLifecycleOwner) { tvRateList ->
             this.tvRateList = tvRateList.results
         }
     }
@@ -167,6 +261,7 @@ class TvPopularFragment : Fragment() {
                 if (diff <= 0) {
                     tvTopRatedPageNo += 1
                     tvRatedViewModel.getTvRated()
+//                    upButtonTvPopular.visibility = View.VISIBLE
                 } else {
 //                    upButtonTvPopular.visibility = View.GONE
                 }
@@ -174,6 +269,7 @@ class TvPopularFragment : Fragment() {
 
         }
     }
+
 
     private fun tapToUp() {
         with(binding) {
@@ -205,6 +301,7 @@ class TvPopularFragment : Fragment() {
                     if (currentPageIndex == lastPageIndex) {
                         tvPopuplarPageNo += 1
                         tvPopularViewModel.getPopularTv()
+
                     }
                 } else {
                     // upButtonTvPopular.visibility = View.GONE
@@ -212,12 +309,4 @@ class TvPopularFragment : Fragment() {
             }
         }
     }
-
-
-
-
-
-
-
-
 }

@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 
 
 class StoryViewModel(private val storyRepository: StoryRepository): ViewModel() {
-    private val mutableStoryPlayList: MutableLiveData<StoryModel> = MutableLiveData()
-    val nowPlayVideolist: LiveData<StoryModel>
+    private val mutableStoryPlayList: MutableLiveData<com.irmak.themoviedc.model.storyModel.StoryModel> = MutableLiveData()
+    val nowPlayVideolist: LiveData<com.irmak.themoviedc.model.storyModel.StoryModel>
         get() = mutableStoryPlayList
 
     fun getPlayVidoeMovie(){

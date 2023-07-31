@@ -9,9 +9,9 @@ import com.irmak.themoviedc.model.trendAll.TrendResponse
 
 class TrendAdapter: RecyclerView.Adapter<TrendViewHolder>() {
 
-    var TrendList: ArrayList<TrendResponse>? = null
+    var TrendList: ArrayList<com.irmak.themoviedc.model.trendAll.TrendResponse>? = null
 
-    fun setTrendAllList(TrendList: ArrayList<TrendResponse>?) {
+    fun setTrendAllList(TrendList: ArrayList<com.irmak.themoviedc.model.trendAll.TrendResponse>?) {
         this.TrendList = TrendList
         notifyDataSetChanged()
     }

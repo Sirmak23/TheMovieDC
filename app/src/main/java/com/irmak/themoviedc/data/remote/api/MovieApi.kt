@@ -19,6 +19,7 @@ import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularModel
 import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedModel
 import com.irmak.themoviedc.model.watchProviders.MovieProviderDetails
+import com.irmak.themoviedc.model.watchProviders.ProviderPriceResponse
 import com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -35,6 +36,10 @@ var tvPopuplarPageNo: Int = 1
 var tvTopRatedPageNo: Int = 1
 var pageNumberNpStory: Int = 1
 var pageNumberTopRated: Int = 1
+var objectType: String = ""
+var idtype: String = "tmdb"
+var localeInfo: String = "tr_TR"
+var MovieOrTvID: Int = 266686
 
 interface MovieApi {
     @GET("movie/popular")
@@ -49,7 +54,7 @@ interface MovieApi {
         @Path("movie_id") movieId: Int? = movieIdNumber,
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr"
-    ): PopularMovieDetailResponse
+    ):PopularMovieDetailResponse
 
     @GET("movie/{movie_id}/credits")
     suspend fun getActorDetail(
@@ -163,7 +168,7 @@ interface MovieApi {
         @Path("time_window") timePd: String? = timePeriod,
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
-    ): TrendModel
+    ):TrendModel
 
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProviders(
@@ -177,7 +182,14 @@ interface MovieApi {
         @Path("series_id") serId: Int? = tvIdNumber,
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
-    ): TvMovieProviderDetails
+    ):TvMovieProviderDetails
 
-
+    @GET("https://apis.justwatch.com/contentpartner/v2/content/offers/object_type/{object_type}/id_type/{id_type}/locale/{locale}")
+    suspend fun getTvProvidersPrice(
+        @Path("object_type") objType: String? = objectType,
+        @Path("id_type") idType: String? = idtype,
+        @Path("locale") locale: String? = localeInfo,
+        @Query("id") id: Int? = MovieOrTvID,
+        @Query("token") token: String = "ABCdef12",
+        ): ProviderPriceResponse
 }

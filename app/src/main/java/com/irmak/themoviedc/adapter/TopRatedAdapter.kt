@@ -11,10 +11,10 @@ import com.irmak.themoviedc.model.topRatedModel.topRatedResult
 
 class TopRatedAdapter():RecyclerView.Adapter<TopRatedViewHolder>() {
 
-     var topList:ArrayList<topRatedResult>?= null
+     var topList:ArrayList<com.irmak.themoviedc.model.topRatedModel.topRatedResult>?= null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setTList(topList:ArrayList<topRatedResult>){
+    fun setTList(topList:ArrayList<com.irmak.themoviedc.model.topRatedModel.topRatedResult>){
         this.topList = topList
         notifyDataSetChanged()
 

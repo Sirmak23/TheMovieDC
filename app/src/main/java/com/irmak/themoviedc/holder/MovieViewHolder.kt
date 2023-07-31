@@ -15,7 +15,7 @@ import java.util.*
 class MovieViewHolder(val binding: FragmentGridLayoutBinding):RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SetTextI18n")
-    fun bind(response: MovieRespons) {
+    fun bind(response:MovieRespons) {
         binding.txtTitleRG.text = response.title
         binding.posterView3.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
         binding.txtDateM.text = response.release_date

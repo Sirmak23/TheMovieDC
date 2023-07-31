@@ -4,15 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.irmak.themoviedc.model.watchProviders.MovieProviderDetails
 import com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails
 import com.irmak.themoviedc.repository.TvWatchProviderRepository
-import com.irmak.themoviedc.repository.WatchProviderRepository
 import kotlinx.coroutines.launch
 
 class TvWatchProvideViewModel  (private val tvWatchProviderRepository: TvWatchProviderRepository): ViewModel() {
-    private val mutableTvProviderList: MutableLiveData<TvMovieProviderDetails> = MutableLiveData()
-    val tvProviderList: LiveData<TvMovieProviderDetails>
+    private val mutableTvProviderList: MutableLiveData<com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails> = MutableLiveData()
+    val tvProviderList: LiveData<com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails>
         get() = mutableTvProviderList
 
     fun getTvProviders(){

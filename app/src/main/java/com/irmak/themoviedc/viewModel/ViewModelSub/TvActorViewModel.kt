@@ -11,8 +11,8 @@ import com.irmak.themoviedc.repository.TvActorRepository
 import kotlinx.coroutines.launch
 
 class TvActorViewModel (private var tvActorRepository: TvActorRepository): ViewModel() {
-    private var mutableTvActorList: MutableLiveData<TvActorModel?> = MutableLiveData()
-    val tvActorList: LiveData<TvActorModel?>
+    private var mutableTvActorList: MutableLiveData<com.irmak.themoviedc.model.tvActorModel.TvActorModel?> = MutableLiveData()
+    val tvActorList: LiveData<com.irmak.themoviedc.model.tvActorModel.TvActorModel?>
         get() = mutableTvActorList
 
     fun getTvActorDetail(){

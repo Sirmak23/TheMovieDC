@@ -9,7 +9,7 @@ import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
 
 class PopularMovieDetailAdapter:RecyclerView.Adapter<PopularMovieViewHolder>() {
 
-    var popularMovieDetailList: ArrayList<PopularMovieDetailResponse>? =null
+    var popularMovieDetailList: ArrayList<com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse>? =null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMovieViewHolder {
         val binding = FragmentDetailBinding.inflate(LayoutInflater.from(parent.context),parent,false)

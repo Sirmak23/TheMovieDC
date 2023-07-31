@@ -6,6 +6,6 @@ data class TvMovieProviderDetails (
 )
 
 data class TvResults(
-    val TR: TvWatchProvideResponse?=null
+    val TR:TvWatchProvideResponse?=null
 )
 

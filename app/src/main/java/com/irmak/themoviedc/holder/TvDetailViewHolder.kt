@@ -9,7 +9,7 @@ import com.irmak.themoviedc.ui.extensions.loadImage
 
 class TvDetailViewHolder(val binding: FragmentTvDetailBinding):RecyclerView.ViewHolder(binding.root) {
 
-    fun tvDetailBind(response:TvDetailModel){
+    fun tvDetailBind(response: com.irmak.themoviedc.model.tvDetailModel.TvDetailModel){
         binding.TvDetailNameTextView .text = response.name
         binding.imdbDetailTextView.text = "${response.vote_average}/10"
         binding.TvDetailOzetTExt.text = response.overview

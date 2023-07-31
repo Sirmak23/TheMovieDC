@@ -9,8 +9,8 @@ import com.irmak.themoviedc.repository.SearchRepository
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchRepository: SearchRepository):ViewModel() {
-    private val mutableSearchList:MutableLiveData<SearchModel> = MutableLiveData()
-    val searchList:LiveData<SearchModel>
+    private val mutableSearchList:MutableLiveData<com.irmak.themoviedc.model.search.SearchModel> = MutableLiveData()
+    val searchList:LiveData<com.irmak.themoviedc.model.search.SearchModel>
     get() = mutableSearchList
 
     fun getSearch(){

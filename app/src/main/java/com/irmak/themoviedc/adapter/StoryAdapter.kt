@@ -10,9 +10,9 @@ import com.irmak.themoviedc.model.storyModel.ResultStoryNP
 
 
 class StoryAdapter: RecyclerView.Adapter<StoryViewHolder>() {
-    var storyPlyList:ArrayList<ResultStoryNP>? = null
+    var storyPlyList:ArrayList<com.irmak.themoviedc.model.storyModel.ResultStoryNP>? = null
 
-    fun setStoryPlayList(storyPlyList:ArrayList<ResultStoryNP>?){
+    fun setStoryPlayList(storyPlyList:ArrayList<com.irmak.themoviedc.model.storyModel.ResultStoryNP>?){
         this.storyPlyList = storyPlyList
         notifyDataSetChanged()
     }

@@ -9,8 +9,8 @@ import com.irmak.themoviedc.model.UpcomingModel.ResultUP
 
 class UpcomingAdapter : RecyclerView.Adapter<UpcomingViewHolder>() {
 
-    var upComingList: ArrayList<ResultUP>? = null
-    fun setUpcomingList(upComingList: ArrayList<ResultUP>) {
+    var upComingList: ArrayList<com.irmak.themoviedc.model.UpcomingModel.ResultUP>? = null
+    fun setUpcomingList(upComingList: ArrayList<com.irmak.themoviedc.model.UpcomingModel.ResultUP>) {
         this.upComingList = upComingList
         notifyDataSetChanged()
     }

@@ -9,9 +9,9 @@ import com.irmak.themoviedc.model.recommendationModel.RecomTvShow
 
 class RecommendationAdapter:RecyclerView.Adapter<RecommendationViewHolder>() {
 
-    var recomList:ArrayList<RecomTvShow>? = null
+    var recomList:ArrayList<com.irmak.themoviedc.model.recommendationModel.RecomTvShow>? = null
 
-    fun setRecommeList(recomList:ArrayList<RecomTvShow>?){
+    fun setRecommeList(recomList:ArrayList<com.irmak.themoviedc.model.recommendationModel.RecomTvShow>?){
         this.recomList = recomList
         notifyDataSetChanged()
     }

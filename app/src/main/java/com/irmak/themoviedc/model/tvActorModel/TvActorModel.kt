@@ -2,8 +2,8 @@ package com.irmak.themoviedc.model.tvActorModel
 
 
 data class TvActorModel(
-    val cast: List<CastResponse>,
-    val crew: List<CrewResponse>,
+    val cast: List<com.irmak.themoviedc.model.tvActorModel.CastResponse>,
+    val crew: List<com.irmak.themoviedc.model.tvActorModel.CrewResponse>,
     val id: Int
 )
 

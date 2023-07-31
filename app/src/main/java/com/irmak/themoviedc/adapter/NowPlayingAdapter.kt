@@ -9,9 +9,9 @@ import com.irmak.themoviedc.model.nowPlayingModel.ResultNP
 
 
 class NowPlayingAdapter: RecyclerView.Adapter<NowPlayingViewHolder>() {
-    var nowPlyList:ArrayList<ResultNP>? = null
+    var nowPlyList:ArrayList<com.irmak.themoviedc.model.nowPlayingModel.ResultNP>? = null
 
-    fun setNowPlayList(nowPlayList:ArrayList<ResultNP>?){
+    fun setNowPlayList(nowPlayList:ArrayList<com.irmak.themoviedc.model.nowPlayingModel.ResultNP>?){
         this.nowPlyList = nowPlayList
         notifyDataSetChanged()
     }

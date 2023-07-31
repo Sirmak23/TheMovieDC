@@ -10,10 +10,10 @@ import com.irmak.themoviedc.model.popularModel.MovieRespons
 var GenreType:Int=0
 class MovieAdapter:RecyclerView.Adapter<MovieViewHolder>() {
 
-    var movieList: ArrayList<MovieRespons>? = null
+    var movieList: ArrayList<com.irmak.themoviedc.model.popularModel.MovieRespons>? = null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(movieList:ArrayList<MovieRespons>){
+    fun setList(movieList:ArrayList<com.irmak.themoviedc.model.popularModel.MovieRespons>){
         this.movieList = movieList
         notifyDataSetChanged()
     }

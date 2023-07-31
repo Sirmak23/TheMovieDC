@@ -1,13 +1,9 @@
 package com.irmak.themoviedc.ui.Fragment
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -69,25 +65,25 @@ class PopularFragment : Fragment() {
 
     var videoIds = ArrayList<Int?>()
     var videoIdsCheck = ArrayList<Int?>()
-    var movieList: List<MovieRespons>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var movieList: List<com.irmak.themoviedc.model.popularModel.MovieRespons>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             movieAdapter.setList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var topList: List<topRatedResult>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var topList: List<com.irmak.themoviedc.model.topRatedModel.topRatedResult>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             topRatedAdapter.setTList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var nowPlayList: List<ResultNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var nowPlayList: List<com.irmak.themoviedc.model.nowPlayingModel.ResultNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             nowPlayingAdapter.setNowPlayList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var storyList: List<ResultStoryNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var storyList: List<com.irmak.themoviedc.model.storyModel.ResultStoryNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             storyAdapter.setStoryPlayList(ArrayList(newValue))
         }
@@ -209,7 +205,7 @@ class PopularFragment : Fragment() {
     val videos = listOf("4SIITjPijKg", "N0S-PGgbu90", "tOAuJHu5Tg0")
 
 
-    private fun getVideoIDs(result: NowPlayingModel) {
+    private fun getVideoIDs(result: com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel) {
         videoIds.clear()
         for (x in 0..5) {
             val vID = result.results?.get(x)?.id
@@ -230,7 +226,7 @@ class PopularFragment : Fragment() {
 //        videoUr.clear()
     }
 
-    fun trailerObserve(resp: TrailerResponse?) {
+    fun trailerObserve(resp: com.irmak.themoviedc.model.trailer.TrailerResponse?) {
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             video = resp.results[0].key.toString()
             if (videoUr.contains(video)){

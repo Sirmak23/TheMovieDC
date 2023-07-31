@@ -36,13 +36,13 @@ import kotlin.properties.Delegates
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
     var trendVisibiliy: Boolean = true
-    var searchList: List<SearchResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var searchList: List<com.irmak.themoviedc.model.search.SearchResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             searchAdapter.setSearchLst(ArrayList(newValue))
         }
         Log.e("Delegates", "searchList -> ${newValue}")
     }
-    var trendList: List<TrendResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var trendList: List<com.irmak.themoviedc.model.trendAll.TrendResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             trendAdapter.setTrendAllList(ArrayList(newValue))
         }

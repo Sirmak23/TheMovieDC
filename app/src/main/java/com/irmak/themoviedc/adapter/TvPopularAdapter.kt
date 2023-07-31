@@ -9,10 +9,10 @@ import com.irmak.themoviedc.holder.TvPopularViewHolder
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse
 
 class TvPopularAdapter : RecyclerView.Adapter<TvPopularViewHolder>() {
-    var tvList: ArrayList<TvPopularResponse>? = null
+    var tvList: ArrayList<com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse>? = null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setListTv(tvList: ArrayList<TvPopularResponse>) {
+    fun setListTv(tvList: ArrayList<com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse>) {
 //        this.tvList = tvList
         if (this.tvList == null) {
             this.tvList = tvList
@@ -46,7 +46,7 @@ class TvPopularAdapter : RecyclerView.Adapter<TvPopularViewHolder>() {
         holder.tvbind(currentItem)
     }
 
-    private fun getNonINItem(position: Int): TvPopularResponse {
+    private fun getNonINItem(position: Int): com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse {
         var count = 0
         tvList?.forEach { currentItem ->
             if (currentItem.origin_country?.contains("IN") != true) {

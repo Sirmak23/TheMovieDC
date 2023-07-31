@@ -8,8 +8,8 @@ import com.irmak.themoviedc.holder.TvWatchProviderViewHolder
 import com.irmak.themoviedc.model.watchProviders.TvProvider
 
 class TvWatchProviderAdapter : RecyclerView.Adapter<TvWatchProviderViewHolder>() {
-    var tvProviderList: List<TvProvider>? = null
-    fun setTvProvidersList(tvProviderList: List<TvProvider>?) {
+    var tvProviderList: List<com.irmak.themoviedc.model.watchProviders.TvProvider>? = null
+    fun setTvProvidersList(tvProviderList: List<com.irmak.themoviedc.model.watchProviders.TvProvider>?) {
         this.tvProviderList = tvProviderList
         notifyDataSetChanged()
     }

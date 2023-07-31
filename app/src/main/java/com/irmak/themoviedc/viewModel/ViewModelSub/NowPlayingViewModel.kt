@@ -9,8 +9,8 @@ import com.irmak.themoviedc.repository.NowPlayingRepository
 import kotlinx.coroutines.launch
 
 class NowPlayingViewModel(private val nowPlayingRepository: NowPlayingRepository):ViewModel() {
-    private val mutableNowPlayList:MutableLiveData<NowPlayingModel> = MutableLiveData()
-    val nowPlaylist:LiveData<NowPlayingModel>
+    private val mutableNowPlayList:MutableLiveData<com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel> = MutableLiveData()
+    val nowPlaylist:LiveData<com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel>
     get() = mutableNowPlayList
 
     fun getNowPlayMovie(){

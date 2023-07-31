@@ -9,9 +9,9 @@ import com.irmak.themoviedc.model.tvActorModel.CastResponse
 
 class TvACtorAdapter : RecyclerView.Adapter<TvActorViewHolder>() {
 
-    var tvActorList: ArrayList<CastResponse>? = null
+    var tvActorList: ArrayList<com.irmak.themoviedc.model.tvActorModel.CastResponse>? = null
 
-    fun setTvActorLst(tvActorList: ArrayList<CastResponse>) {
+    fun setTvActorLst(tvActorList: ArrayList<com.irmak.themoviedc.model.tvActorModel.CastResponse>) {
         this.tvActorList = tvActorList
         notifyDataSetChanged()
     }

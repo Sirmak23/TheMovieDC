@@ -2,7 +2,7 @@ package com.irmak.themoviedc.model.watchProviders
 
 data class TvWatchProvideResponse(
     val link: String? = null,
-    val flatrate: List<TvProvider>? = null,
+    val flatrate: List<com.irmak.themoviedc.model.watchProviders.TvProvider>? = null,
 )
 data class TvProvider(
     val logo_path: String? = null,

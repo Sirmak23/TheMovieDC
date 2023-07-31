@@ -11,8 +11,8 @@ import com.irmak.themoviedc.repository.SeasonInfoRepository
 import kotlinx.coroutines.launch
 
 class SeasonInfoViewModel(private val seasonInfoRepository: SeasonInfoRepository):ViewModel() {
-    private var mutableSeasonInfoList: MutableLiveData<SeasonInfoResponse?> = MutableLiveData()
-    val seasonInfoList: LiveData<SeasonInfoResponse?>
+    private var mutableSeasonInfoList: MutableLiveData<com.irmak.themoviedc.model.seasonInfoModel.SeasonInfoResponse?> = MutableLiveData()
+    val seasonInfoList: LiveData<com.irmak.themoviedc.model.seasonInfoModel.SeasonInfoResponse?>
         get() = mutableSeasonInfoList
 
     fun getSeasonDetail(){

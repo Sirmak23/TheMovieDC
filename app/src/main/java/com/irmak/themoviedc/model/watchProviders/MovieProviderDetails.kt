@@ -1,11 +1,11 @@
 package com.irmak.themoviedc.model.watchProviders
 
 data class MovieProviderDetails(
-    val id: Int,
-    val results: Results
+    val id: Int? = null,
+    val results:Results? = null,
 )
 
 data class Results(
-    val TR: WatchProvideResponse?=null
+    val TR: WatchProvideResponse? = null
 )
 

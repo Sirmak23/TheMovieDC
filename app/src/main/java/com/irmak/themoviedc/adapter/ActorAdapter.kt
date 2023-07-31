@@ -7,7 +7,7 @@ import com.irmak.themoviedc.databinding.FragmentActorLayoutBinding
 import com.irmak.themoviedc.holder.ActorViewHolder
 import com.irmak.themoviedc.model.actorModel.ActorDetail
 
-class ActorAdapter:RecyclerView.Adapter<ActorViewHolder>() {
+class ActorAdapter : RecyclerView.Adapter<ActorViewHolder>() {
 
     var actorDetailList: ArrayList<ActorDetail>? = null
 

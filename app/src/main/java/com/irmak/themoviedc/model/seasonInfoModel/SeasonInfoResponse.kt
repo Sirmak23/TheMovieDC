@@ -2,7 +2,7 @@ package com.irmak.themoviedc.model.seasonInfoModel
 
 data class SeasonInfoResponse(
     val air_date: String? = null,
-    val episodes: List<EpisodeData>? = null
+    val episodes: List<com.irmak.themoviedc.model.seasonInfoModel.EpisodeData>? = null
 )
 
 data class EpisodeData(
@@ -18,7 +18,7 @@ data class EpisodeData(
     val still_path: String? = null,
     val vote_average: Double? = null,
     val vote_count: Int? = null,
-    val crew: List<CrewData>? = null
+    val crew: List<com.irmak.themoviedc.model.seasonInfoModel.CrewData>? = null
 )
 
 data class CrewData(

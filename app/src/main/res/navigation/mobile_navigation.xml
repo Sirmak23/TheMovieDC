@@ -71,6 +71,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_detailFragment_to_priceDetailFragment"
+            app:destination="@id/priceDetailFragment" />
 
     </fragment>
     <fragment
@@ -130,6 +133,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_tvDetailFragment_to_priceDetailFragment"
+            app:destination="@id/priceDetailFragment" />
     </fragment>
     <dialog
         android:id="@+id/recommendationFragment"
@@ -159,4 +165,9 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
+    <fragment
+        android:id="@+id/priceDetailFragment"
+        android:name="com.irmak.themoviedc.ui.Fragment.PriceDetailFragment"
+        android:label="fragment_price_detail"
+        tools:layout="@layout/fragment_price_detail" />
 </navigation>

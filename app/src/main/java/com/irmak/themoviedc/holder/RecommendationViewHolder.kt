@@ -14,7 +14,7 @@ import com.irmak.themoviedc.ui.Fragment.TvDetailFragmentDirections
 import com.irmak.themoviedc.ui.extensions.loadImage
 
 class RecommendationViewHolder(val binding: TvPagerLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-    fun recomBind(response: RecomTvShow){
+    fun recomBind(response: com.irmak.themoviedc.model.recommendationModel.RecomTvShow){
         binding.tvPopularImage.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
         binding.tvNameText.text = response.name
 //        binding.tvPopularImageCardview.setOnClickListener {

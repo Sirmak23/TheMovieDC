@@ -6,7 +6,8 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-
+var isBackOrNext = 5
+var observChoice = 0
 fun ImageView.loadImage(imageUrl: String?) {
     Glide.with(context.applicationContext)
         .load(imageUrl)

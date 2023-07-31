@@ -12,7 +12,7 @@ import com.irmak.themoviedc.ui.extensions.loadImage
 
 class TrendViewHolder(private val binding: TrendLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun trendBind(response: TrendResponse) {
+    fun trendBind(response: com.irmak.themoviedc.model.trendAll.TrendResponse) {
         if (response.media_type == "movie") {
             binding.txtTitleT.text = response.title
         } else if (response.media_type == "tv") {

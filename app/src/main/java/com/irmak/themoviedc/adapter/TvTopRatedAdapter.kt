@@ -7,20 +7,12 @@ import com.irmak.themoviedc.databinding.TvRatedGridBinding
 import com.irmak.themoviedc.holder.TvRatedViewHolder
 import com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse
 
+
 class TvTopRatedAdapter : RecyclerView.Adapter<TvRatedViewHolder>() {
-    var tvTopRated: ArrayList<TvTopRatedResponse>? = null
+    private var tvTopRated: ArrayList<com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse>? = null
 
-    fun setListRateTv(tvTopRated: ArrayList<TvTopRatedResponse>) {
-//        this.tvTopRated = tvTopRated
-
-        if (this.tvTopRated == null) {
-            this.tvTopRated = tvTopRated
-        } else if (this.tvTopRated == tvTopRated) {
-        }else {
-            this.tvTopRated?.addAll(tvTopRated)
-        }
-
-//        this.tvTopRated = ArrayList(tvTopRated.filter { it.origin_country?.contains("JP") != true })
+    fun setListRateTv(tvTopRated: ArrayList<com.irmak.themoviedc.model.tvTopRatedModel.TvTopRatedResponse>) {
+        this.tvTopRated = tvTopRated
         notifyDataSetChanged()
     }
 
@@ -30,30 +22,11 @@ class TvTopRatedAdapter : RecyclerView.Adapter<TvRatedViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-//        return tvTopRated?.size ?: 0
-        var count = 0
-        tvTopRated?.forEach { currentItem ->
-            if (currentItem.origin_country?.contains("JP") != true) {
-                count++
-            }
-        }
-        return count
+        return tvTopRated?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: TvRatedViewHolder, position: Int) {
-        val currentItem = getNonJpItem(position)
-        holder.setTvRate(currentItem)
+        holder.setTvRate(tvTopRated!!.get(position))
     }
-    private fun getNonJpItem(position: Int): TvTopRatedResponse {
-        var count = 0
-        tvTopRated?.forEach { currentItem ->
-            if (currentItem.origin_country?.contains("JP") != true) {
-                if (count == position) {
-                    return currentItem
-                }
-                count++
-            }
-        }
-        throw IllegalArgumentException("Invalid position: $position")
-    }
+
 }

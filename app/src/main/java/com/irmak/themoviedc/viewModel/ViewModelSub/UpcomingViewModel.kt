@@ -9,8 +9,8 @@ import com.irmak.themoviedc.repository.UpcomingRepository
 import kotlinx.coroutines.launch
 
 class UpcomingViewModel(private val upcomingRepository:UpcomingRepository):ViewModel(){
-    private val  mutableUpcomingList:MutableLiveData<UpcomingModel> = MutableLiveData()
-    val upcomingList:LiveData<UpcomingModel>
+    private val  mutableUpcomingList:MutableLiveData<com.irmak.themoviedc.model.UpcomingModel.UpcomingModel> = MutableLiveData()
+    val upcomingList:LiveData<com.irmak.themoviedc.model.UpcomingModel.UpcomingModel>
     get() = mutableUpcomingList
 
     fun getUpcomingMovie(){

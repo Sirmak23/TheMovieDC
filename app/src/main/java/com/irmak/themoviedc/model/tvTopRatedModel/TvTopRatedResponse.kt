@@ -17,3 +17,4 @@ data class TvTopRatedResponse(
     val video: Boolean? = null,
     val vote_average: Number? = null,
 )
+

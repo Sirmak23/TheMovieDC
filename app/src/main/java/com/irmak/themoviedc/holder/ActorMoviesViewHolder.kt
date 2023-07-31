@@ -10,7 +10,7 @@ import com.irmak.themoviedc.ui.Fragment.ActorMovieFragmentDirections
 import com.irmak.themoviedc.ui.extensions.loadImage
 
 class ActorMoviesViewHolder(val binding:TvRatedGridBinding):RecyclerView.ViewHolder(binding.root) {
-    fun actorMovieBind(response:HisMovie){
+    fun actorMovieBind(response: com.irmak.themoviedc.model.actorModel.HisMovie){
         binding.posterViewTvRate.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
         binding.txtTitleTvRate.text = response.title
         binding.cardViewTvRate.setOnClickListener {

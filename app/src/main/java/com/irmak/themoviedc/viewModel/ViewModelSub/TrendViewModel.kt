@@ -11,8 +11,8 @@ import com.irmak.themoviedc.repository.TrendRepository
 import kotlinx.coroutines.launch
 
 class TrendViewModel (private val trendRepository: TrendRepository): ViewModel() {
-    private var mutableTrendList: MutableLiveData<TrendModel?> = MutableLiveData()
-    val trendList: LiveData<TrendModel?>
+    private var mutableTrendList: MutableLiveData<com.irmak.themoviedc.model.trendAll.TrendModel?> = MutableLiveData()
+    val trendList: LiveData<com.irmak.themoviedc.model.trendAll.TrendModel?>
         get() = mutableTrendList
 
     fun getTrendAll(){

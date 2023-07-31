@@ -8,9 +8,9 @@ import com.irmak.themoviedc.holder.SeasonInfoViewHolder
 import com.irmak.themoviedc.model.seasonInfoModel.EpisodeData
 
 class SeasonInfoAdapter : RecyclerView.Adapter<SeasonInfoViewHolder>() {
-    var seasonEpisodeList: ArrayList<EpisodeData>? = null
+    var seasonEpisodeList: ArrayList<com.irmak.themoviedc.model.seasonInfoModel.EpisodeData>? = null
 
-    fun setSeasonList(seasonEpisodeList: ArrayList<EpisodeData>?) {
+    fun setSeasonList(seasonEpisodeList: ArrayList<com.irmak.themoviedc.model.seasonInfoModel.EpisodeData>?) {
         this.seasonEpisodeList = seasonEpisodeList
         notifyDataSetChanged()
     }

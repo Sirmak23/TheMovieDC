@@ -9,8 +9,8 @@ import com.irmak.themoviedc.repository.TrailerRepository
 import kotlinx.coroutines.launch
 
 class TrailerViewModel(private val trailerRepository: TrailerRepository): ViewModel() {
-    private var mutableTrailerList: MutableLiveData<TrailerResponse?> = MutableLiveData()
-    val trailerList: LiveData<TrailerResponse?>
+    private var mutableTrailerList: MutableLiveData<com.irmak.themoviedc.model.trailer.TrailerResponse?> = MutableLiveData()
+    val trailerList: LiveData<com.irmak.themoviedc.model.trailer.TrailerResponse?>
         get() = mutableTrailerList
 
     fun getVideo(){

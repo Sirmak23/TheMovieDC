@@ -22,7 +22,7 @@ import kotlin.properties.Delegates
 
 class ActorMovieFragment : Fragment() {
     lateinit var binding:FragmentActorMovieBinding
-    var actorMovieList: List<HisMovie>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var actorMovieList: List<com.irmak.themoviedc.model.actorModel.HisMovie>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             actorMoviesAdapter.setActorMoviesList(ArrayList(newValue))
         }

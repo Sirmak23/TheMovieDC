@@ -13,36 +13,34 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.google.common.base.Strings.isNullOrEmpty
 import com.irmak.themoviedc.MainActivity
-import com.irmak.themoviedc.R
 import com.irmak.themoviedc.adapter.SeasonInfoAdapter
 import com.irmak.themoviedc.adapter.TvACtorAdapter
 import com.irmak.themoviedc.adapter.TvDetailAdapter
 import com.irmak.themoviedc.adapter.TvWatchProviderAdapter
-import com.irmak.themoviedc.adapter.WatchProviderAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.objectType
 import com.irmak.themoviedc.data.remote.api.seasonNo
 import com.irmak.themoviedc.databinding.FragmentTvDetailBinding
 import com.irmak.themoviedc.model.seasonInfoModel.EpisodeData
 import com.irmak.themoviedc.model.trailer.TvTrailerResponse
 import com.irmak.themoviedc.model.tvActorModel.CastResponse
 import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
-import com.irmak.themoviedc.model.watchProviders.Provider
+import com.irmak.themoviedc.model.watchProviders.ProviderPriceResponse
 import com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails
 import com.irmak.themoviedc.model.watchProviders.TvProvider
 import com.irmak.themoviedc.repository.*
 import com.irmak.themoviedc.retrofit.RetrofitClient
 import com.irmak.themoviedc.ui.extensions.loadImage
+import com.irmak.themoviedc.ui.extensions.observChoice
 import com.irmak.themoviedc.viewModel.*
+import com.irmak.themoviedc.viewModel.ViewModelSub.ProviderPriceViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.SeasonInfoViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.TrailerViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.TvActorViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.TvDetailViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.TvTrailerViewModel
 import com.irmak.themoviedc.viewModel.ViewModelSub.TvWatchProvideViewModel
-import com.irmak.themoviedc.viewModel.ViewModelSub.WatchProvideViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
@@ -57,25 +55,24 @@ class TvDetailFragment : Fragment() {
 //        }
 //        Log.e("Delegates", "user -> ${newValue}")
 //    }
-    var tvActorList: List<CastResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var tvActorList: List<com.irmak.themoviedc.model.tvActorModel.CastResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             tvActorAdapter.setTvActorLst(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var seasonInfoList: List<EpisodeData>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var seasonInfoList: List<com.irmak.themoviedc.model.seasonInfoModel.EpisodeData>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             seasonInfoAdapter.setSeasonList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var tvProviderList: List<TvProvider>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var tvProviderList: List<com.irmak.themoviedc.model.watchProviders.TvProvider>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             tvWatchProviderAdapter.setTvProvidersList(ArrayList(newValue))
         }
         Log.e("Delegates", "tvProviderList -> ${newValue}")
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,6 +85,8 @@ class TvDetailFragment : Fragment() {
             ::tvDetailObserver
         )
         ChoiceVideo = "tv"
+        objectType = "show"
+        observChoice = 2
         binding.TvRecomButtonImageView.setOnClickListener {
             val dialogFragment = RecommendationFragment.newInstance()
             dialogFragment.show(childFragmentManager, "RecommendationFragment")
@@ -111,6 +110,12 @@ class TvDetailFragment : Fragment() {
     }
     private val retrofit: Retrofit by lazy {
         RetrofitClient.getRetrofit()
+    }
+    private val retrofitJW:Retrofit by lazy {
+        RetrofitClient.getRetrofitJW()
+    }
+    private val movieApiJw:MovieApi by lazy {
+        retrofitJW.create(MovieApi::class.java)
     }
     private val movieApi: MovieApi by lazy {
         retrofit.create(MovieApi::class.java)
@@ -156,17 +161,23 @@ class TvDetailFragment : Fragment() {
     private val tvWatchProviderAdapter: TvWatchProviderAdapter by lazy {
         TvWatchProviderAdapter()
     }
+    private val providerPriceRepository:ProviderPriceRepository by lazy {
+        ProviderPriceRepository(movieApiJw)
+    }
+    private val providerPriceViewModel:ProviderPriceViewModel by viewModels {
+        ProviderPriceViewModelFactory(providerPriceRepository)
+    }
 
     var tvVideo: String = "null"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val main = activity as MainActivity
         main.setBottomNavigationViewVisibility(false)
-        tvDetailViewModel.getTvDetail()
         tvTrailerViewModel.getTvVideo()
         TvActorViewModel.getTvActorDetail()
         seasonInfoViewModel.getSeasonDetail()
         tvWatchProvideViewModel.getTvProviders()
+//        providerPriceViewModel.getTvProvidersPrice()
         actorInitBinding()
         seasonInfoInıtBinding()
         ActorObserver()
@@ -175,6 +186,7 @@ class TvDetailFragment : Fragment() {
         providerObserver()
         tvTrailerViewModel.tvTrailerList.observe(viewLifecycleOwner, ::tvTrailerObserve)
         tvWatchProvideViewModel.tvProviderList.observe(viewLifecycleOwner, ::tvProvideText)
+//        providerPriceViewModel.providePriceList.observe(viewLifecycleOwner, ::tvPriceObserver)
         binding.TvBackButtonImageView.setOnClickListener {
             findNavController().navigate(TvDetailFragmentDirections.actionTvDetailFragmentToTvPopularFragment())
         }
@@ -191,7 +203,11 @@ class TvDetailFragment : Fragment() {
 
     }
 
-   private fun tvProvideText(response:TvMovieProviderDetails){
+    private fun tvPriceObserver(response: com.irmak.themoviedc.model.watchProviders.ProviderPriceResponse?) {
+
+    }
+
+   private fun tvProvideText(response: com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails){
        if (response.results.TR?.flatrate?.get(0)?.logo_path.isNullOrEmpty()){
            binding.infoTextProvide.visibility = TextView.VISIBLE
        }else{
@@ -203,7 +219,11 @@ class TvDetailFragment : Fragment() {
     private fun providerInitBinding() {
         with(binding) {
             providerRecycler.apply {
-                tvWatchProviderAdapter.setTvProvidersList(ArrayList(tvProviderList))
+                if (tvProviderList.isNullOrEmpty()){
+                    tvWatchProviderAdapter.setTvProvidersList(ArrayList(emptyList()))
+                }else{
+                    tvWatchProviderAdapter.setTvProvidersList(ArrayList(tvProviderList))
+                }
                 adapter = tvWatchProviderAdapter
 //                providerRecycler.canScrollVertically(0)
             }
@@ -216,7 +236,7 @@ class TvDetailFragment : Fragment() {
         }
     }
 
-    fun tvTrailerObserve(resp: TvTrailerResponse?) {
+    fun tvTrailerObserve(resp: com.irmak.themoviedc.model.trailer.TvTrailerResponse?) {
 //         video = resp?.results?.get(0)?.let { it.key.toString() } ?:"null"
         if (resp != null && resp.results != null && resp.results.isNotEmpty()) {
             tvVideo = resp.results.get(0).key.toString()
@@ -257,7 +277,11 @@ class TvDetailFragment : Fragment() {
     private fun actorInitBinding() {
         with(binding) {
             TvActorRecyler.apply {
-                tvActorAdapter.setTvActorLst(ArrayList(tvActorList))
+                if (tvActorList.isNullOrEmpty()){
+                    tvActorAdapter.setTvActorLst(ArrayList(emptyList()))
+                }else{
+                    tvActorAdapter.setTvActorLst(ArrayList(tvActorList))
+                }
                 adapter = tvActorAdapter
                 TvActorRecyler.canScrollVertically(0)
             }
@@ -267,7 +291,11 @@ class TvDetailFragment : Fragment() {
     private fun seasonInfoInıtBinding() {
         with(binding) {
             seasonInfoRecycler.apply {
-                seasonInfoAdapter.setSeasonList(ArrayList(seasonInfoList))
+                if (seasonInfoList.isNullOrEmpty()){
+                    seasonInfoAdapter.setSeasonList(ArrayList(emptyList()))
+                }else{
+                    seasonInfoAdapter.setSeasonList(ArrayList(seasonInfoList))
+                }
                 adapter = seasonInfoAdapter
                 seasonInfoRecycler.canScrollVertically(0)
             }
@@ -286,3 +314,4 @@ class TvDetailFragment : Fragment() {
         }
     }
 }
+

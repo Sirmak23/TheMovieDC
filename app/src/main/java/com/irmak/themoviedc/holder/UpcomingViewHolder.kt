@@ -12,7 +12,7 @@ import com.irmak.themoviedc.ui.extensions.loadImage
 class UpcomingViewHolder(val binding: FragmentUpcomingGridLayoutBinding):RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SetTextI18n")
-    fun UpcomingBind(response:ResultUP){
+    fun UpcomingBind(response: com.irmak.themoviedc.model.UpcomingModel.ResultUP){
         binding.posterViewUP.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response.poster_path}")
         binding.upComingImageBackground.loadImage("https://www.themoviedb.org/t/p/w1280_and_h720_bestv2${response.backdrop_path}")
         binding.imdbPhotoUP.loadImage("https://m.media-amazon.com/images/G/01/imdb/images/social/imdb_logo._CB410901634_.png")

@@ -17,7 +17,7 @@ class SearchViewHolder(val binding: SearchLayoutGridBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SetTextI18n")
-    fun searchBind(result: SearchResponse) {
+    fun searchBind(result: com.irmak.themoviedc.model.search.SearchResponse) {
         if (result.media_type == "movie"){
             binding.txtTitleS.text = result.title
         }else if (result.media_type == "tv"){

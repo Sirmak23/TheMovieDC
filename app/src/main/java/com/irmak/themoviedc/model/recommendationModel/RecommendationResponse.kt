@@ -2,7 +2,7 @@ package com.irmak.themoviedc.model.recommendationModel
 
 data class RecommendationResponse(
     val page: Int? = null,
-    val results: List<RecomTvShow>? = null,
+    val results: List<com.irmak.themoviedc.model.recommendationModel.RecomTvShow>? = null,
     val total_pages: Int? = null,
     val total_results: Int? = null
 )

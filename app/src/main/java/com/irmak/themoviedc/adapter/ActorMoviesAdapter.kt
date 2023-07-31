@@ -3,11 +3,8 @@ package com.irmak.themoviedc.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.irmak.themoviedc.databinding.FragmentActorLayoutBinding
-import com.irmak.themoviedc.databinding.FragmentActorMovieBinding
 import com.irmak.themoviedc.databinding.TvRatedGridBinding
 import com.irmak.themoviedc.holder.ActorMoviesViewHolder
-import com.irmak.themoviedc.holder.ActorViewHolder
 import com.irmak.themoviedc.model.actorModel.HisMovie
 
 class ActorMoviesAdapter: RecyclerView.Adapter<ActorMoviesViewHolder>() {

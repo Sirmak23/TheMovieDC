@@ -9,9 +9,9 @@ import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
 
 class TvDetailAdapter:RecyclerView.Adapter<TvDetailViewHolder>() {
 
-    var tvDetailList: ArrayList<TvDetailModel>? =null
+    var tvDetailList: ArrayList<com.irmak.themoviedc.model.tvDetailModel.TvDetailModel>? =null
 
-    fun setTvList(tvDetailList: ArrayList<TvDetailModel>){
+    fun setTvList(tvDetailList: ArrayList<com.irmak.themoviedc.model.tvDetailModel.TvDetailModel>){
             this.tvDetailList = tvDetailList
             notifyDataSetChanged()
     }

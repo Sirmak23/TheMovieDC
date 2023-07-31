@@ -3,7 +3,7 @@ package com.irmak.themoviedc.model.trendAll
 
 data class TrendModel(
     val page:Int? = null,
-    val results: List<TrendResponse>?=null,
+    val results: List<com.irmak.themoviedc.model.trendAll.TrendResponse>?=null,
     val total_pages:Int?=null,
     val total_results:Int? = null
 

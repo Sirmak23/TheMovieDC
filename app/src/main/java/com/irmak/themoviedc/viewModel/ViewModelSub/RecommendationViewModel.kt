@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 
 class RecommendationViewModel (private val recommendationRepository: RecommendationRepository):
     ViewModel() {
-    private var mutableRecomList: MutableLiveData<RecommendationResponse?> = MutableLiveData()
-    val recomList: LiveData<RecommendationResponse?>
+    private var mutableRecomList: MutableLiveData<com.irmak.themoviedc.model.recommendationModel.RecommendationResponse?> = MutableLiveData()
+    val recomList: LiveData<com.irmak.themoviedc.model.recommendationModel.RecommendationResponse?>
         get() = mutableRecomList
 
     fun getRecommendations(){

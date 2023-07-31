@@ -11,7 +11,7 @@ import com.irmak.themoviedc.ui.extensions.loadImage
 
 class StoryViewHolder(val binding: FragmentVideoLayoutBinding): RecyclerView.ViewHolder(binding.root){
 
-    fun storyBind(result: ResultStoryNP){
+    fun storyBind(result: com.irmak.themoviedc.model.storyModel.ResultStoryNP){
         binding.videoMoviePoster.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${result.poster_path}")
         binding.videoMovieName.text = result.title
         binding.trailerCardView.setOnClickListener {

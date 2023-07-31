@@ -31,13 +31,13 @@ import kotlin.properties.Delegates
 
 class NowPlayingFragment : Fragment() {
     lateinit var concat: ConcatAdapter
-    var nowPlayList: List<ResultNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var nowPlayList: List<com.irmak.themoviedc.model.nowPlayingModel.ResultNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             nowPlayingAdapter.setNowPlayList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var storyList: List<ResultStoryNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var storyList: List<com.irmak.themoviedc.model.storyModel.ResultStoryNP>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             storyAdapter.setStoryPlayList(ArrayList(newValue))
         }

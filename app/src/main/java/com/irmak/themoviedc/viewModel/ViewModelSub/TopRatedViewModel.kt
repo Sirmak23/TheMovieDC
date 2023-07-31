@@ -9,8 +9,8 @@ import com.irmak.themoviedc.repository.TopRatedRepository
 import kotlinx.coroutines.launch
 
 class TopRatedViewModel(private val topRatedRepository: TopRatedRepository):ViewModel() {
-    private val mutableTopList:MutableLiveData<TopRatedRespone> = MutableLiveData()
-    val topList:LiveData<TopRatedRespone>
+    private val mutableTopList:MutableLiveData<com.irmak.themoviedc.model.topRatedModel.TopRatedRespone> = MutableLiveData()
+    val topList:LiveData<com.irmak.themoviedc.model.topRatedModel.TopRatedRespone>
     get() = mutableTopList
 
     fun getTopRatedMovie(){

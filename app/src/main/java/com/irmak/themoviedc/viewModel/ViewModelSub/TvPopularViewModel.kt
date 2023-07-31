@@ -8,14 +8,25 @@ import com.irmak.themoviedc.model.tvPopularModel.TvPopularModel
 import com.irmak.themoviedc.repository.TvPopularRepository
 import kotlinx.coroutines.launch
 
-class TvPopularViewModel(private val tvPopularRepository: TvPopularRepository):ViewModel() {
+class TvPopularViewModel(private val tvPopularRepository: TvPopularRepository) : ViewModel() {
     private val mutableTvList: MutableLiveData<TvPopularModel> = MutableLiveData()
-    val tvList:LiveData<TvPopularModel>
-    get() = mutableTvList
+    val tvList: LiveData<TvPopularModel>
+        get() = mutableTvList
 
-    fun getPopularTv(){
+    fun getPopularTv() {
         viewModelScope.launch {
-            mutableTvList.value = tvPopularRepository.getPopularTv()
+            val topRateListWithFilter = tvPopularRepository.getPopularTv().results?.filter {
+                // true ise liseye ekler değilse filtreler yani jp içermiyorsa true döndür ve listeye ekle
+                it.genre_ids?.contains(16) != true
+                it.origin_country?.contains("JP") != true
+                it.origin_country?.contains("IN") != true
+                it.overview.isNullOrEmpty() != true
+
+            }
+            val orijinalTopRatedList = tvPopularRepository.getPopularTv()
+            orijinalTopRatedList.results = topRateListWithFilter
+            mutableTvList.value = orijinalTopRatedList
         }
     }
+
 }

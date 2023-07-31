@@ -22,7 +22,7 @@ import retrofit2.Retrofit
 import kotlin.properties.Delegates
 
 class UpcomingFragment : Fragment() {
-    var upcomingList:List<ResultUP>? by Delegates.observable(arrayListOf()){_,_, newValue->
+    var upcomingList:List<com.irmak.themoviedc.model.UpcomingModel.ResultUP>? by Delegates.observable(arrayListOf()){ _, _, newValue->
         if (newValue.isNullOrEmpty().not()){
             upcomingAdapter.setUpcomingList(ArrayList(newValue))
         }

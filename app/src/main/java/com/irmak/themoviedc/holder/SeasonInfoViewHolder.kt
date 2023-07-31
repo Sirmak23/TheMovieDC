@@ -11,7 +11,7 @@ import com.irmak.themoviedc.ui.extensions.loadImage
 class SeasonInfoViewHolder(val binding:TvEpisodesLayoutBinding):RecyclerView.ViewHolder(binding.root) {
     var overView:String = "ÖZET BULUNAMADI"
     @SuppressLint("SetTextI18n")
-    fun SeasonBind(response: EpisodeData){
+    fun SeasonBind(response: com.irmak.themoviedc.model.seasonInfoModel.EpisodeData){
         binding.episodePoster.loadImage("https://www.themoviedb.org/t/p/w500_and_h282_bestv2${response.still_path}")
         binding.episodeName.text = response.name
         binding.seasonAndEpisodeNo.text = "S:${response.season_number} B:${response.episode_number}"

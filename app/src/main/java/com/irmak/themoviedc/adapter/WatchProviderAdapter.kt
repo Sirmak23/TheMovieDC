@@ -5,14 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.databinding.ProvidersLayoutBinding
 import com.irmak.themoviedc.holder.WatchProviderViewHolder
+import com.irmak.themoviedc.model.watchProviders.Offer
 import com.irmak.themoviedc.model.watchProviders.Provider
 
 class WatchProviderAdapter:RecyclerView.Adapter<WatchProviderViewHolder>() {
-    var providerList:List<Provider>?=null
-    fun setProvidersList(providerList:List<Provider>?){
+    var providerList:List<com.irmak.themoviedc.model.watchProviders.Provider>?=null
+    fun setProvidersList(providerList:List<com.irmak.themoviedc.model.watchProviders.Provider>?){
         this.providerList = providerList
         notifyDataSetChanged()
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchProviderViewHolder {
         val binding = ProvidersLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false)
