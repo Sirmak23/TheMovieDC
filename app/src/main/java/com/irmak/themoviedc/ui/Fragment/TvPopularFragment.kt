@@ -242,6 +242,11 @@ class TvPopularFragment : Fragment() {
     private fun tvPopularObserve() {
         tvPopularViewModel.tvList.observe(viewLifecycleOwner) { tvList ->
             this.tvList = tvList.results
+            if (tvList?.results.isNullOrEmpty()){
+                tvPopuplarPageNo++
+                tvPopularViewModel.getPopularTv()
+            }
+
         }
     }
 

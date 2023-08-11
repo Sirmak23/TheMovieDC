@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.databinding.FragmentActorLayoutBinding
 import com.irmak.themoviedc.holder.ActorViewHolder
 import com.irmak.themoviedc.model.actorModel.ActorDetail
+import com.irmak.themoviedc.model.actorModel.ActorMovies
+import com.irmak.themoviedc.model.actorModel.HisMovie
 
 class ActorAdapter : RecyclerView.Adapter<ActorViewHolder>() {
 

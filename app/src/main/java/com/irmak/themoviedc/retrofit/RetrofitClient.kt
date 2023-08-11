@@ -30,11 +30,10 @@ abstract class RetrofitClient {
                     .build()
 
                 INSTANCE = instance
-
                 instance
-
             }
         }
+
         fun getRetrofitJW(): Retrofit {
             return INSTANCE ?: synchronized(this) {
                 val instance = Retrofit.Builder()
@@ -45,9 +44,7 @@ abstract class RetrofitClient {
                     .build()
 
                 INSTANCE = instance
-
                 instance
-
             }
         }
 

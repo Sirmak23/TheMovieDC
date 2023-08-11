@@ -8,8 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.irmak.themoviedc.adapter.WatchProviderAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
 import com.irmak.themoviedc.databinding.FragmentPriceDetailBinding
@@ -49,11 +52,11 @@ class PriceDetailFragment : Fragment() {
     var linkBR: String? = null
     var links: MutableList<String?> = mutableListOf()
     var linksBR: MutableList<String?> = mutableListOf()
-    var providerPriceList: List<Offer> by Delegates.observable(arrayListOf()) { _, _, newValue ->
-        if (newValue.isNullOrEmpty().not()) {
-        }
-        Log.e("priceList", "providerPriceList -> ${newValue}")
-    }
+//    var providerPriceList: List<Offer> by Delegates.observable(arrayListOf()) { _, _, newValue ->
+//        if (newValue.isNullOrEmpty().not()) {
+//        }
+//        Log.e("priceList", "providerPriceList -> ${newValue}")
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,6 +127,7 @@ class PriceDetailFragment : Fragment() {
             viewLifecycleOwner,
             ::providerObserver
         )
+
         watchProvideViewModel.providerList.observe(
             viewLifecycleOwner,
             ::watchProviderObserver
@@ -141,6 +145,10 @@ class PriceDetailFragment : Fragment() {
                 viewLifecycleOwner,
                 ::movieDetailObserver
             )
+            providerPriceViewModel.providePriceList.observe(
+                viewLifecycleOwner,
+                ::providerMovieObserver
+            )
         } else if (observChoice == 2) {
             tvDetailViewModel.tvDetailList.observe(
                 viewLifecycleOwner,
@@ -156,21 +164,30 @@ class PriceDetailFragment : Fragment() {
 
     private fun clickLink() {
         binding.flatLinkButon.setOnClickListener {
-            val url = "${link}"
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            requireContext().startActivity(intent)
-            links.clear()
+            val url = "$link}"
+            if (link.isNullOrEmpty().not()) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                requireContext().startActivity(intent)
+                links.clear()
+            } else {
+                Toast.makeText(requireContext(), "Website bulunamadı", Toast.LENGTH_SHORT).show()
+            }
+            Log.e("link", "$link:")
         }
     }
 
     private fun clickLinkBR() {
         binding.buyAndRateImageView.setOnClickListener {
             val url = "${linkBR}"
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            requireContext().startActivity(intent)
-            linksBR.clear()
+            if (linkBR.isNullOrEmpty().not()) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                requireContext().startActivity(intent)
+                linksBR.clear()
+            } else {
+                Toast.makeText(requireContext(), "Website bulunamadı", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -217,29 +234,12 @@ class PriceDetailFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun providerObserver(response: ProviderPriceResponse?) {
+
         response?.offers?.forEach { offer ->
-            if (offer.monetization_type == "buy" && offer.presentation_type == "sd" && offer.provider_id == providersId) {
-                binding.buySdPrice.text = "SD: ${offer.retail_price.toString()} ₺"
-
-            }
-            if (offer.monetization_type == "buy" && offer.presentation_type == "hd" && offer.provider_id == providersId) {
-                binding.buyHdPrice.text = "HD: ${offer.retail_price.toString()} ₺"
-            }
-            if (offer.monetization_type == "buy" && offer.presentation_type == "4k" && offer.provider_id == providersId) {
-                binding.buy4kPrice.text = "4K: ${offer.retail_price.toString()} ₺"
-            }
-            if (offer.monetization_type == "rent" && offer.presentation_type == "sd" && offer.provider_id == providersId) {
-                binding.rentSdPrice.text = "SD: ${offer.retail_price.toString()} ₺"
-            }
-            if (offer.monetization_type == "rent" && offer.presentation_type == "hd" && offer.provider_id == providersId) {
-                binding.rentHdPrice.text = "HD: ${offer.retail_price.toString()} ₺"
-            }
-            if (offer.monetization_type == "rent" && offer.presentation_type == "4k" && offer.provider_id == providersId) {
-                binding.rent4kPrice.text = "4K: ${offer.retail_price.toString()} ₺ "
-            }
-
-
 // response.offers içindeki tüm verileri döngü ile bkıyoruz
+            if (link.isNullOrEmpty().not()){
+                return
+            }
             for (offer in response.offers) {
                 if (offer.monetization_type == "flatrate" && offer.provider_id == providersId) {
                     links.add(offer.urls.raw_web)
@@ -259,4 +259,37 @@ class PriceDetailFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun providerMovieObserver(response: ProviderPriceResponse?) {
+        if (response?.offers.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Sağlayıcı bulunamadı", Toast.LENGTH_SHORT).show()
+//            val action = PriceDetailFragmentDirections.actionPriceDetailFragmentToDetailFragment()
+//            findNavController().navigate(action)
+        } else {
+
+            response?.offers?.forEach { offer ->
+                if (offer.monetization_type == "buy" && offer.presentation_type == "sd" && offer.provider_id == providersId) {
+                    binding.buySdPrice.text = "SD: ${offer.retail_price.toString()} ₺"
+
+                }
+                if (offer.monetization_type == "buy" && offer.presentation_type == "hd" && offer.provider_id == providersId) {
+                    binding.buyHdPrice.text = "HD: ${offer.retail_price.toString()} ₺"
+                }
+                if (offer.monetization_type == "buy" && offer.presentation_type == "4k" && offer.provider_id == providersId) {
+                    binding.buy4kPrice.text = "4K: ${offer.retail_price.toString()} ₺"
+                }
+                if (offer.monetization_type == "rent" && offer.presentation_type == "sd" && offer.provider_id == providersId) {
+                    binding.rentSdPrice.text = "SD: ${offer.retail_price.toString()} ₺"
+                }
+                if (offer.monetization_type == "rent" && offer.presentation_type == "hd" && offer.provider_id == providersId) {
+                    binding.rentHdPrice.text = "HD: ${offer.retail_price.toString()} ₺"
+                }
+                if (offer.monetization_type == "rent" && offer.presentation_type == "4k" && offer.provider_id == providersId) {
+                    binding.rent4kPrice.text = "4K: ${offer.retail_price.toString()} ₺ "
+                }
+
+            }
+        }
+
+    }
 }

@@ -13,7 +13,7 @@ class WatchProvideViewModel (private val watchProviderRepository: WatchProviderR
         get() = mutableProviderList
 
 
-    fun getProviders() {
+    fun getProviders(){
         viewModelScope.launch {
             mutableProviderList.value = watchProviderRepository.getProviders()
         }

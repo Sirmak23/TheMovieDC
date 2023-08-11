@@ -9,11 +9,12 @@
     tools:context=".ui.Fragment.ActorMovieFragment">
 
     <TextView
+        android:id="@+id/ActorsMovieText"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:text="Oyuncunun diğer filmleri..."
+        android:text="Oyuncunun oynadığı filmler..."
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />

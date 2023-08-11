@@ -2,7 +2,7 @@ package com.irmak.themoviedc.model.actorModel
 
 
 data class ActorMovies(
-    val cast: List<com.irmak.themoviedc.model.actorModel.HisMovie>,
+    val cast: List<HisMovie>,
     val id: Int? = null
 )
 data class HisMovie(

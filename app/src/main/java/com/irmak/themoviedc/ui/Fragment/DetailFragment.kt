@@ -19,8 +19,14 @@ import com.irmak.themoviedc.adapter.PopularMovieDetailAdapter
 import com.irmak.themoviedc.adapter.ProvideFlatrateAdapter
 import com.irmak.themoviedc.adapter.WatchProviderAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.MovieOrTvID
 import com.irmak.themoviedc.data.remote.api.objectType
 import com.irmak.themoviedc.databinding.FragmentDetailBinding
+import com.irmak.themoviedc.model.actorModel.ActorDetail
+import com.irmak.themoviedc.model.actorModel.ActorMovies
+import com.irmak.themoviedc.model.actorModel.HisMovie
+import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
+import com.irmak.themoviedc.model.tvPopularModel.TvPopularResponse
 import com.irmak.themoviedc.model.watchProviders.ProviderPriceResponse
 import com.irmak.themoviedc.repository.ActorRepository
 import com.irmak.themoviedc.repository.PopularMovieRepository
@@ -42,7 +48,7 @@ import kotlin.properties.Delegates
 
 
 class DetailFragment : Fragment() {
-    var actorList: List<com.irmak.themoviedc.model.actorModel.ActorDetail>? by Delegates.observable(
+    var actorList: List<ActorDetail>? by Delegates.observable(
         arrayListOf()
     ) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
@@ -64,7 +70,7 @@ class DetailFragment : Fragment() {
         if (newValue.isNullOrEmpty().not()) {
             ProviderFlatrateAdapter.setProvidersList(ArrayList(newValue))
         }
-        Log.e("Delegates", "providerList -> ${newValue}")
+        Log.e("Delegates", "providerFlatrateList -> ${newValue}")
     }
 
     private lateinit var binding: FragmentDetailBinding
@@ -136,8 +142,6 @@ class DetailFragment : Fragment() {
     private val ProviderFlatrateAdapter: ProvideFlatrateAdapter by lazy {
         ProvideFlatrateAdapter()
     }
-
-
     var video: String = "null"
 
     @SuppressLint("SuspiciousIndentation")
@@ -195,7 +199,7 @@ private fun setOnCLicks(){
     }
     binding.trailerButton.setOnClickListener {
         if (video == "null") {
-            Toast.makeText(requireContext(), "Film fragmanına erişilemiyor", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Film fragmanına erişilemedi!", Toast.LENGTH_SHORT)
                 .show()
         } else {
             val action = DetailFragmentDirections.actionDetailFragmentToVideoPlayerFragment()
@@ -212,12 +216,13 @@ private fun setOnCLicks(){
     }
 
     @SuppressLint("SetTextI18n")
-    private fun movieDetailObserver(response: com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse?) {
+    private fun movieDetailObserver(response: PopularMovieDetailResponse?){
         binding.MovieDetailNameTextView.text = response?.title
         binding.imdbDetailTextView.text = "${response?.vote_average}/10"
         binding.DetailYt.text = "Y.T: ${response?.release_date}"
         binding.DetailOzetTExt.text = response?.overview
-        binding.movieDEtailImageView.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2${response?.poster_path}")
+        MovieOrTvID = response?.id!!
+        binding.movieDEtailImageView.loadImage("https://www.themoviedb.org/t/p/w600_and_h900_bestv2"+ response.poster_path)
         binding.popularDetailBack.loadImage("https://image.tmdb.org/t/p/w300_and_h450_bestv2${response?.backdrop_path}")
 //        binding.popularDetailBack.loadImage("https://www.themoviedb.org/t/p/w533_and_h300_bestv2${response?.backdrop_path}")
         binding.imdbDetailPhoto2.loadImage("https://ia.media-imdb.com/images/M/MV5BODc4MTA3NjkzNl5BMl5BcG5nXkFtZTgwMDg0MzQ2OTE@._V1_.png")

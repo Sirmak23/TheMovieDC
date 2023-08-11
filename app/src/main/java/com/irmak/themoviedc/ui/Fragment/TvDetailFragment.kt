@@ -19,15 +19,13 @@ import com.irmak.themoviedc.adapter.TvACtorAdapter
 import com.irmak.themoviedc.adapter.TvDetailAdapter
 import com.irmak.themoviedc.adapter.TvWatchProviderAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.MovieOrTvID
 import com.irmak.themoviedc.data.remote.api.objectType
 import com.irmak.themoviedc.data.remote.api.seasonNo
 import com.irmak.themoviedc.databinding.FragmentTvDetailBinding
 import com.irmak.themoviedc.model.seasonInfoModel.EpisodeData
-import com.irmak.themoviedc.model.trailer.TvTrailerResponse
 import com.irmak.themoviedc.model.tvActorModel.CastResponse
 import com.irmak.themoviedc.model.tvDetailModel.TvDetailModel
-import com.irmak.themoviedc.model.watchProviders.ProviderPriceResponse
-import com.irmak.themoviedc.model.watchProviders.TvMovieProviderDetails
 import com.irmak.themoviedc.model.watchProviders.TvProvider
 import com.irmak.themoviedc.repository.*
 import com.irmak.themoviedc.retrofit.RetrofitClient
@@ -44,8 +42,6 @@ import com.irmak.themoviedc.viewModel.ViewModelSub.TvWatchProvideViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.*
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
-
-
 class TvDetailFragment : Fragment() {
     private lateinit var binding: FragmentTvDetailBinding
 
@@ -55,19 +51,19 @@ class TvDetailFragment : Fragment() {
 //        }
 //        Log.e("Delegates", "user -> ${newValue}")
 //    }
-    var tvActorList: List<com.irmak.themoviedc.model.tvActorModel.CastResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var tvActorList: List<CastResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             tvActorAdapter.setTvActorLst(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var seasonInfoList: List<com.irmak.themoviedc.model.seasonInfoModel.EpisodeData>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var seasonInfoList: List<EpisodeData>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             seasonInfoAdapter.setSeasonList(ArrayList(newValue))
         }
         Log.e("Delegates", "user -> ${newValue}")
     }
-    var tvProviderList: List<com.irmak.themoviedc.model.watchProviders.TvProvider>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var tvProviderList: List<TvProvider>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             tvWatchProviderAdapter.setTvProvidersList(ArrayList(newValue))
         }
@@ -248,6 +244,7 @@ class TvDetailFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun tvDetailObserver(response: TvDetailModel?) {
+        MovieOrTvID = response?.id!!
         binding.TvDetailNameTextView.text = response?.name
         binding.imdbDetailTextView.text = "${response?.vote_average}/10"
         binding.DetailYt.text = "Y.T: ${response?.first_air_date}"

@@ -13,6 +13,13 @@ fun ImageView.loadImage(imageUrl: String?) {
         .load(imageUrl)
         .into(this)
 }
+fun cutText(text: String, maxLength: Int): String {
+    return if (text.length > maxLength) {
+        text.substring(0, maxLength) + "..."
+    } else {
+        text
+    }
+}
 fun loadImageWithDrawable(url: String, imageView: ImageView) {
     Glide.with(imageView)
         .load(url)

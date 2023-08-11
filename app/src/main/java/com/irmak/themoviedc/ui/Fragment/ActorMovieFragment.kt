@@ -11,12 +11,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.adapter.ActorMoviesAdapter
 import com.irmak.themoviedc.data.remote.api.MovieApi
+import com.irmak.themoviedc.data.remote.api.objectType
 import com.irmak.themoviedc.databinding.FragmentActorMovieBinding
+import com.irmak.themoviedc.model.actorModel.ActorDetail
+import com.irmak.themoviedc.model.actorModel.ActorMovies
 import com.irmak.themoviedc.model.actorModel.HisMovie
 import com.irmak.themoviedc.repository.ActorMovieRepository
 import com.irmak.themoviedc.retrofit.RetrofitClient
+import com.irmak.themoviedc.ui.extensions.observChoice
 import com.irmak.themoviedc.viewModel.ViewModelSub.ActorMovieViewModel
 import com.irmak.themoviedc.viewModel.viewModelFactory.ActorMovieViewModelFactory
+import retrofit2.Response
 import retrofit2.Retrofit
 import kotlin.properties.Delegates
 
@@ -57,8 +62,11 @@ class ActorMovieFragment : Fragment() {
         main.setBottomNavigationViewVisibility(false)
         actorMovieViewModel.getActorMovies()
         actorMovieInit()
+        observChoice = 1
         actorMovieObserve()
     }
+
+
     private fun actorMovieInit() {
         with(binding) {
             recyclerActorMovies.apply {

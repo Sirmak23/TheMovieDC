@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#020E23"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.Fragment.ActorSearchFragment">
+
+    <TextView
+        android:id="@+id/tmdcText"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:text="THE MOVİE DC"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search_bar_actor"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="20dp"
+        android:layout_height="50dp">
+
+        <SearchView
+            android:id="@+id/searchViewActor"
+            android:queryHint="Aktör ara..."
+            android:background="#576377"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/actorSearchRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/actor_search_layout"
+        />
+
+</LinearLayout>

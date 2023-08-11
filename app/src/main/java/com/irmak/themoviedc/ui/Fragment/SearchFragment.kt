@@ -12,6 +12,7 @@ import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.irmak.themoviedc.MainActivity
 import com.irmak.themoviedc.adapter.SearchAdapter
@@ -36,13 +37,13 @@ import kotlin.properties.Delegates
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
     var trendVisibiliy: Boolean = true
-    var searchList: List<com.irmak.themoviedc.model.search.SearchResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var searchList: List<SearchResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             searchAdapter.setSearchLst(ArrayList(newValue))
         }
         Log.e("Delegates", "searchList -> ${newValue}")
     }
-    var trendList: List<com.irmak.themoviedc.model.trendAll.TrendResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
+    var trendList: List<TrendResponse>? by Delegates.observable(arrayListOf()) { _, _, newValue ->
         if (newValue.isNullOrEmpty().not()) {
             trendAdapter.setTrendAllList(ArrayList(newValue))
         }
@@ -81,6 +82,11 @@ class SearchFragment : Fragment() {
                 return true
             }
         })
+
+        binding.HumanSearchButton.setOnClickListener {
+            val direction = SearchFragmentDirections.actionSearchFragmentToActorSearchFragment2()
+            findNavController().navigate(direction)
+        }
         return binding.root
     }
 

@@ -7,8 +7,8 @@ import com.irmak.themoviedc.holder.SearchViewHolder
 import com.irmak.themoviedc.model.search.SearchResponse
 
 class SearchAdapter:RecyclerView.Adapter<SearchViewHolder>() {
-    var searchList: ArrayList<com.irmak.themoviedc.model.search.SearchResponse>? = null
-    fun setSearchLst(searchList: ArrayList<com.irmak.themoviedc.model.search.SearchResponse>) {
+    var searchList: ArrayList<SearchResponse>? = null
+    fun setSearchLst(searchList: ArrayList<SearchResponse>) {
         this.searchList = searchList
         notifyDataSetChanged()
     }

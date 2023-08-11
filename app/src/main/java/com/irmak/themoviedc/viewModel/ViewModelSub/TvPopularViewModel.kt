@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.irmak.themoviedc.data.remote.api.tvPopuplarPageNo
 import com.irmak.themoviedc.model.tvPopularModel.TvPopularModel
 import com.irmak.themoviedc.repository.TvPopularRepository
 import kotlinx.coroutines.launch
@@ -28,5 +29,6 @@ class TvPopularViewModel(private val tvPopularRepository: TvPopularRepository) :
             mutableTvList.value = orijinalTopRatedList
         }
     }
+
 
 }

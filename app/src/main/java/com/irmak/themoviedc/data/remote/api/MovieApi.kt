@@ -7,6 +7,7 @@ import com.irmak.themoviedc.model.nowPlayingModel.NowPlayingModel
 import com.irmak.themoviedc.model.popularModel.PopularMovieDetailResponse
 import com.irmak.themoviedc.model.popularModel.PopularMovieResponse
 import com.irmak.themoviedc.model.recommendationModel.RecommendationResponse
+import com.irmak.themoviedc.model.search.ActorSearchModel
 import com.irmak.themoviedc.model.search.SearchModel
 import com.irmak.themoviedc.model.seasonInfoModel.SeasonInfoResponse
 import com.irmak.themoviedc.model.storyModel.StoryModel
@@ -27,10 +28,12 @@ import retrofit2.http.Query
 
 var pageNumber: Int = 1
 var seasonNo: Int = 1
+var seasonNumber: Int = 1
 var personId: Int? = 1
 var movieIdNumber: Int? = 420888
 var tvIdNumber: Int? = 71912
 var searchWord: String? = ""
+var actorSearchWord: String? = ""
 var timePeriod: String? = "day"
 var tvPopuplarPageNo: Int = 1
 var tvTopRatedPageNo: Int = 1
@@ -54,7 +57,7 @@ interface MovieApi {
         @Path("movie_id") movieId: Int? = movieIdNumber,
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr"
-    ):PopularMovieDetailResponse
+    ): PopularMovieDetailResponse
 
     @GET("movie/{movie_id}/credits")
     suspend fun getActorDetail(
@@ -119,6 +122,13 @@ interface MovieApi {
         @Query("language") language: String = "tr",
         @Query("page") pageNumber: Int = 1
     ): SearchModel
+    @GET("search/person")
+    suspend fun getActorSearch(
+        @Query("query") word: String? = actorSearchWord,
+        @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
+        @Query("language") language: String = "tr",
+        @Query("page") pageNumber: Int = 1
+    ): ActorSearchModel
 
     @GET("tv/popular")
     suspend fun getPopularTv(
@@ -168,7 +178,7 @@ interface MovieApi {
         @Path("time_window") timePd: String? = timePeriod,
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
-    ):TrendModel
+    ): TrendModel
 
     @GET("movie/{movie_id}/watch/providers")
     suspend fun getProviders(
@@ -182,14 +192,23 @@ interface MovieApi {
         @Path("series_id") serId: Int? = tvIdNumber,
         @Query("api_key") apiKey: String = "5f73da10797f33e35dff709965fdc85a",
         @Query("language") language: String = "tr",
-    ):TvMovieProviderDetails
+    ): TvMovieProviderDetails
 
     @GET("https://apis.justwatch.com/contentpartner/v2/content/offers/object_type/{object_type}/id_type/{id_type}/locale/{locale}")
     suspend fun getTvProvidersPrice(
         @Path("object_type") objType: String? = objectType,
         @Path("id_type") idType: String? = idtype,
         @Path("locale") locale: String? = localeInfo,
-        @Query("id") id: Int? = MovieOrTvID,
+        @Query("id") id: Int = MovieOrTvID,
         @Query("token") token: String = "ABCdef12",
-        ): ProviderPriceResponse
+    ): ProviderPriceResponse
+
+//    @GET("https://apis.justwatch.com/contentpartner/v2/content/offers/object_type/show/id_type/{id_type}/season_number/{season_number}/locale/{locale}")
+//    suspend fun getTvProvidersEandS(
+//        @Path("id_type") idType: String? = idtype,
+//        @Path("season_number") objType: String? = seasonNumber,
+//        @Path("locale") locale: String? = localeInfo,
+//        @Query("id") id: Int? = MovieOrTvID,
+//        @Query("token") token: String = "ABCdef12",
+//    ):
 }
